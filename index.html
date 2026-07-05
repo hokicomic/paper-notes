@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI 論文追蹤與新知萃取導航｜更新版</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    :root {
+      --navy: #10243e;
+      --navy-2: #17395f;
+      --blue: #2b6cb0;
+      --paper: #fbf8f1;
+      --bg: #eef3f8;
+      --card: #ffffff;
+      --muted: #5f6f84;
+      --border: #d9e2ec;
+      --green: #2f855a;
+      --amber: #b7791f;
+      --red: #c53030;
+      --violet: #6b46c1;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans TC", "Helvetica Neue", Arial, sans-serif;
+      background: linear-gradient(180deg, #e9f0f8 0%, #f7f3ea 100%);
+      color: #243142;
+      margin: 0;
+      line-height: 1.65;
+    }
+    a { color: inherit; }
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(16, 36, 62, 0.96);
+      color: #ffffff;
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+      backdrop-filter: blur(8px);
+    }
+    .topbar-inner {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 10px 20px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .brand { font-weight: 800; letter-spacing: 0.02em; }
+    .navlinks { display: flex; flex-wrap: wrap; gap: 8px; font-size: 13px; }
+    .navlinks a {
+      text-decoration: none;
+      padding: 5px 9px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.08);
+    }
+    .navlinks a:hover { background: rgba(255,255,255,0.18); }
+    .container { max-width: 1180px; margin: 0 auto; padding: 34px 20px 56px; }
+    header.hero {
+      background: var(--navy);
+      color: #ffffff;
+      border-radius: 18px;
+      padding: 36px 32px;
+      margin-bottom: 28px;
+      box-shadow: 0 18px 45px rgba(16, 36, 62, 0.24);
+      position: relative;
+      overflow: hidden;
+    }
+    header.hero::after {
+      content: "";
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      right: -80px;
+      top: -80px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(77, 171, 247, 0.28), transparent 62%);
+    }
+    h1 { margin: 0 0 10px; font-size: clamp(26px, 4vw, 42px); line-height: 1.16; }
+    .subtitle { margin: 0; max-width: 880px; color: #d8e5f3; font-size: 16px; }
+    .meta-row { margin-top: 20px; display: flex; flex-wrap: wrap; gap: 10px; }
+    .pill {
+      display: inline-flex;
+      gap: 6px;
+      align-items: center;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(255,255,255,0.08);
+      color: #edf6ff;
+      border-radius: 999px;
+      padding: 7px 12px;
+      font-size: 13px;
+    }
+    .notice {
+      background: #fff7e6;
+      border: 1px solid #f4d7a1;
+      color: #5f3b00;
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin: 0 0 24px;
+      font-size: 14px;
+    }
+    .section {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 24px;
+      box-shadow: 0 8px 24px rgba(36,49,66,0.06);
+    }
+    .section-title {
+      margin: 0 0 14px;
+      color: var(--navy);
+      font-size: 21px;
+      border-left: 5px solid var(--blue);
+      padding-left: 12px;
+    }
+    .section-intro { margin: -4px 0 18px; color: var(--muted); font-size: 14px; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+    .card {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      background: #fbfdff;
+      min-height: 156px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease;
+    }
+    .card:hover { transform: translateY(-2px); border-color: #a9c6e5; box-shadow: 0 8px 18px rgba(43,108,176,0.11); }
+    .card-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; margin-bottom: 8px; }
+    .site-name { font-weight: 800; font-size: 16px; color: #1e2f44; }
+    .tagline { margin: 3px 0 0; color: var(--muted); font-size: 12px; }
+    .btn-link {
+      white-space: nowrap;
+      display: inline-block;
+      background: var(--blue);
+      color: #ffffff;
+      text-decoration: none;
+      padding: 5px 11px;
+      border-radius: 7px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .btn-link:hover { background: #1f5f99; }
+    .description { font-size: 14px; color: #3d4b5f; margin: 8px 0 0; }
+    .best-for { margin-top: 10px; font-size: 12px; color: #43556b; }
+    .best-for strong { color: var(--green); }
+    .priority {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .02em;
+      padding: 3px 7px;
+      border-radius: 999px;
+      margin-bottom: 8px;
+    }
+    .p1 { background: #e6f4ea; color: #23613b; }
+    .p2 { background: #e8f1ff; color: #1d4e89; }
+    .p3 { background: #fff3d6; color: #7b4c00; }
+    .table-wrap { overflow-x: auto; }
+    table { border-collapse: collapse; width: 100%; background: #ffffff; border-radius: 12px; overflow: hidden; }
+    th, td { padding: 11px 12px; border-bottom: 1px solid var(--border); vertical-align: top; text-align: left; font-size: 14px; }
+    th { background: #edf4fb; color: #17395f; font-weight: 800; }
+    tr:last-child td { border-bottom: none; }
+    .workflow {
+      background: #f0ece2;
+      border-left: 5px solid var(--navy-2);
+      padding: 18px;
+      border-radius: 0 12px 12px 0;
+    }
+    .workflow h3 { margin-top: 0; color: var(--navy); }
+    .workflow ol { margin: 0; padding-left: 22px; }
+    .workflow li { margin: 8px 0; }
+    .prompt-box {
+      background: #0f172a;
+      color: #dbeafe;
+      border-radius: 12px;
+      padding: 16px;
+      overflow-x: auto;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: 13px;
+      white-space: pre-wrap;
+      line-height: 1.65;
+    }
+    .small { font-size: 12px; color: var(--muted); }
+    footer { text-align: center; color: #718096; margin-top: 32px; font-size: 12px; }
+    @media (max-width: 760px) {
+      .grid { grid-template-columns: 1fr; }
+      header.hero { padding: 28px 22px; }
+      .card-header { flex-direction: column; align-items: flex-start; }
+      .btn-link { white-space: normal; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">AI Paper Navigation</div>
+      <div class="navlinks">
+        <a href="#daily">每日入口</a>
+        <a href="#primary">原始來源</a>
+        <a href="#code">程式碼與評測</a>
+        <a href="#maps">引文地圖</a>
+        <a href="#labs">大廠研究</a>
+        <a href="#workflow">閱讀工作流</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <header class="hero">
+      <h1>前沿 AI 研究與論文追蹤導航｜更新版</h1>
+      <p class="subtitle">用於快速抓取最新 AI 論文、判斷是否值得深讀、追蹤程式碼與資料集，並把高價值論文交給本專案做「價值初篩 → 新知萃取 → 雙欄批注 HTML」。</p>
+      <div class="meta-row">
+        <span class="pill">更新日期：2026-07-05</span>
+        <span class="pill">用途：AI / ML / Agent / RAG / Multimodal / Benchmark</span>
+        <span class="pill">所有網站按鈕皆為可點擊連結</span>
+      </div>
+    </header>
+
+    <div class="notice">
+      <strong>使用原則：</strong>不要把所有來源都當成同等重要。每日只看「趨勢入口」，每週用「引文地圖」擴展主題，高價值論文才丟進本專案做完整 HTML 批注。低價值論文只做速讀卡。
+    </div>
+
+    <section class="section" id="daily">
+      <h2 class="section-title">1. 最新論文與社群熱度入口</h2>
+      <p class="section-intro">適合每天 5–10 分鐘掃描。核心任務是找候選論文，不是立刻精讀。</p>
+      <div class="grid">
+        <article class="card">
+          <div>
+            <span class="priority p1">每日必看</span>
+            <div class="card-header">
+              <div><div class="site-name">Hugging Face Daily Papers</div><div class="tagline">社群投票、Daily / Weekly / Monthly</div></div>
+              <a href="https://huggingface.co/papers" target="_blank" rel="noopener noreferrer" class="btn-link">造訪網站 →</a>
+            </div>
+            <p class="description">AI 社群熱門論文入口，可用 Daily、Weekly、Monthly 篩選，也常連到 arXiv、GitHub、Demo、模型或資料集。</p>
+          </div>
+          <div class="best-for"><strong>最適合：</strong>每天挑 3–5 篇候選論文做價值初篩。</div>
+        </article>
+        <article class="card">
+          <div>
+            <span class="priority p1">趨勢補充</span>
+            <div class="card-header">
+              <div><div class="site-name">Hugging Face Trending Papers</div><div class="tagline">熱門論文與社群互動</div></div>
+              <a href="https://huggingface.co/papers/trending" target="_blank" rel="noopener noreferrer" class="btn-link">造訪網站 →</a>
+            </div>
+            <p class="description">適合看近期被社群大量討論的 AI 論文。若只想快速掌握主線，優先看這裡。</p>
+          </div>
+          <div class="best-for"><strong>最適合：</strong>抓熱門題材、agent、LLM、multimodal 等方向。</div>
+        </article>
+        <article class="card">
+          <div>
+            <span class="priority p2">討論脈絡</span>
+            <div class="card-header">
+              <div><div class="site-name">alphaXiv</div><div class="tagline">arXiv 論文討論與追蹤</div></div>
+              <a href="https://www.alphaxiv.org/" target="_blank" rel="noopener noreferrer" class="btn-link">造訪網站 →</a>
+            </div>
+            <p class="description">可探索 trending papers、近期活動、作者追蹤與論文討論。適合看一篇論文是否真的引起研究社群反應。</p>
+          </div>
+          <div class="best-for"><strong>最適合：</strong>判斷論文熱度是否只是標題黨，或有實質討論。</div>
+        </article>
+        <article class="card">
+          <div>
+            <span class="priority p2">個人化篩選</span>
+            <div class="card-header">
+              <div><div class="site-name">arXiv Sanity Light</div><div class="tagline">arXiv 熱門與個人化推薦</div></div>
+              <a href="https://arxiv-sanity-lite.com/" target="_blank" rel="noopener noreferrer" class="btn-link">造訪網站 →</a>
+            </div>
+            <p class="description">適合快速看近期 arXiv 熱門論文與建立個人化篩選習慣。若服務不穩，請改用 Hugging Face Papers 與 arXiv 官方入口。</p>
+          </div>
+          <div class="best-for"><strong>最適合：</strong>作為每日掃描的第二來源。</div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="primary">
+      <h2 class="section-title">2. 原始論文來源：直接抓最新論文</h2>
+      <p class="section-intro">這些入口比聚合平台更原始，適合你要找「今天剛上架」或特定子領域論文。</p>
+      <div class="grid">
+        <article class="card">
+          <div>
+            <span class="priority p1">原始來源</span>
+            <div class="card-header">
+              <div><div class="site-name">arXiv cs.AI Recent</div><div class="tagline">Artificial Intelligence</div></div>
+              <a href="https://arxiv.org/list/cs.AI/recent" target="_blank" rel="noopener noreferrer" class="btn-link">造訪網站 →</a>
+            </div>
+            <p class="description">AI 類別最新論文列表。適合找 agent、planning、reasoning、AI system 等較廣義 AI 論文。</p>
+          </div>
+          <div class="best-for"><strong>最適合：</strong>追蹤 AI general / agent / reasoning。</div>
+        </article>
+        <article class="card">
+          <div>
+            <span class="priority p1">LLM/NLP</span>
+            <div class="card-header">
+              <div><div class="site-name">arXiv cs.CL Recent</div><div class="tagline">Computation and Language</div></div>
+              <a href="https://arxiv.org/list/cs.CL/recent" target="_blank" rel="noopener noreferrer" class="btn-link">造訪網站 →</a>
+            </div>
+            <p class="description">NLP、LLM、RAG、alignment、evaluation、language agent 相關論文常出現在這裡。</p>
+          </div>
+          <div class="best-for"><strong>最適合：</strong>追蹤 LLM 與語言模型方法。</div>
+        </article>
+        <article class="card">
+          <div>
+            <span class="priority p2">多模態/視覺</span>
+            <div class="card-header">
+              <div><div class="site-name">arXiv cs.CV Recent</div><div class="tagline">Computer Vision and Pattern Recognition</div></div>
+              <a href="https://arxiv.org/list/cs.CV/recent" target="_blank" rel="noopener noreferrer" class="btn-link">造訪網站 →</a>
+            </div>
+            <p class="description">CV、VLM、image/video generation、multimodal grounding、visual reasoning 的主要新論文來源。</p>
+          </div>
+          <div class="best-for"><strong>最適合：</strong>追蹤多模態與生成式視覺。</div>
+        </article>
+        <article class="card">
+          <div>
+            <span class="priority p2">機器學習</span>
+            <div class="card-header">
+              <div><div class="site-name">arXiv cs.LG Recent</div><div class="tagline">Machine Learning</div></div>
+              <a href="https://arxiv.org/list/cs.LG/recent" target="_blank" rel="noopener noreferrer" class="btn-link">造訪網站 →</a>
+            </div>
+            <p class="description">較偏 ML 方法、訓練、robustness、optimization、representation learning 的新論文來源。</p>
+          </div>
+          <div class="best-for"><strong>最適合：</strong>追蹤方法與理論基礎。</div>
+        </article>
+        <article class="card">
+          <div>
+            <span class="priority p2">統計學習</span>
+            <div class="card-header">
+              <div><div class="site-name">arXiv stat.ML Recent</div><div class="tagline">Machine Learning Statistics</div></div>
+              <a href="https://arxiv.org/list/stat.ML/recent" target="_blank" rel="noopener noreferrer" class="btn-link">造訪網站 →</a>
+            </div>
+            <p class="description">偏統計機器學習、推論、泛化、可靠性與評估方法。適合補足 AI 論文的理論與證據面。</p>
+          </div>
+          <div class="best-for"><strong>最適合：</strong>看證據強度與方法假設。</div>
+        </article>
+        <article class="card">
+          <div>
+            <span class="priority p2">會議論文</span>
+            <div class="card-header">
+              <div><div class="site-name">OpenReview</div><div class="tagline">ICLR / ICML / NeurIPS 等開放審稿場域</div></div>
+              <a href="https://openreview.net/" target="_blank" rel="noopener noreferrer" class="btn-link">造訪網站 →</a>
+            </div>
+            <p class="description">可以看投稿論文、審稿意見、作者回應與會議分組。它能補上 arXiv 沒有的「同行質疑」脈絡。</p>
+          </div>
+          <div class="best-for"><strong>最適合：</strong>判斷論文限制、爭議與審稿評價。</div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="code">
+      <h2 class="section-title">3. 程式碼、資料集、Benchmark 與可復現性</h2>
+      <p class="section-intro">如果你的目標是學到可遷移的新方法，這一類比純摘要更重要。</p>
+      <div class="grid">
+        <article class="card">
+          <div>
+            <span class="priority p1">可復現</span>
+            <div class="card-header">
+              <div><div class="site-name">Papers with Code</div><div class="tagline">論文、程式碼、資料集、排行榜</div></div>
+              <a href="https://paperswithcode.co/" target="_blank" rel="noopener noreferrer" class="btn-link">造訪網站 →</a>
+            </div>
+            <p class="description">用來確認論文是否有 code、dataset、method 與 leaderboard。若只想讀能實作的論文，這是重要篩選器。</p>
+          </div>
+          <div class="best-for"><strong>最適合：</strong>可操作性評分與復現任務設計。</div>
+        </article>
+        <article class="card">
+          <div>
+            <span class="priority p2">程式碼搜尋</span>
+            <div class="card-header">
+              <div><div class="site-name">CatalyzeX</div><div class="tagline">幫論文找開源實作</div></div>
+              <a href="https://www.catalyzex.com/" target="_blank" rel="noopener noreferrer" class="btn-link">造訪網站 →</a>
+            </div>
+            <p class="description">可搜尋 AI 與其他研究論文的開源程式碼，也有瀏覽器擴充功能，瀏覽 arXiv、Scholar、GitHub 時能提示相關 code。</p>
+          </div>
+          <div class="best-for"><strong>最適合：</strong>快速判斷一篇論文能不能實作。</div>
+        </article>
+        <article class="card">
+          <div>
+            <span class="priority p2">模型/資料</span>
+            <div class="card-header">
+              <div><div class="site-name">Hugging Face Models</div><div class="tagline">模型權重、Demo、使用方式</div></div>
+              <a href="https://huggingface.co/models" target="_blank" rel="noopener noreferrer" class="btn-link">造訪網站 →</a>
+            </div>
+            <p class="description">讀模型論文時，用來確認是否有實際模型權重、推論範例、license 與社群使用情況。</p>
+          </div>
+          <div class="best-for"><strong>最適合：</strong>模型可用性與產品應用評估。</div>
+        </article>
+        <article class="card">
+          <div>
+            <span class="priority p2">資料集</span>
+            <div class="card-header">
+              <div><div class="site-name">Hugging Face Datasets</div><div class="tagline">資料集、dataset card、使用限制</div></div>
+              <a href="https://huggingface.co/datasets" target="_blank" rel="noopener noreferrer" class="btn-link">造訪網站 →</a>
+            </div>
+            <p class="description">用來檢查資料來源、欄位、license、偏差、限制與可否直接載入。資料集論文尤其需要看這裡。</p>
+          </div>
+          <div class="best-for"><strong>最適合：</strong>資料品質與可遷移性分析。</div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="maps">
+      <h2 class="section-title">4. 引文地圖、個人化追蹤與研究網絡</h2>
+      <p class="section-intro">用來回答「這篇論文在研究脈絡中在哪裡？」以及「後續還有哪些相關新論文？」</p>
+      <div class="grid">
+        <article class="card">
+          <div>
+            <span class="priority p1">研究追蹤</span>
+            <div class="card-header">
+              <div><div class="site-name">Semantic Scholar</div><div class="tagline">AI-powered scholarly search / feeds / alerts</div></div>
+              <a href="https://www.semanticscholar.org/" target="_blank" rel="noopener noreferrer" class="btn-link">造訪網站 →</a>
+            </div>
+            <p class="description">適合查引用、作者、相關論文與建立 Research Feeds。可用來追蹤某個主題的新論文推薦。</p>
+          </div>
+          <div class="best-for"><strong>最適合：</strong>建立長期主題追蹤。</div>
+        </article>
+        <article class="card">
+          <div>
+            <span class="priority p1">文獻地圖</span>
+            <div class="card-header">
+              <div><div class="site-name">Litmaps</div><div class="tagline">citation map + monitoring</div></div>
+              <a href="https://www.litmaps.com/" target="_blank" rel="noopener noreferrer" class="btn-link">造訪網站 →</a>
+            </div>
+            <p class="description">丟入種子論文後建立引文網絡，適合找前置論文、後續論文與主題演化方向。</p>
+          </div>
+          <div class="best-for"><strong>最適合：</strong>做主題綜述與相關工作地圖。</div>
+        </article>
+        <article class="card">
+          <div>
+            <span class="priority p2">引用擴展</span>
+            <div class="card-header">
+              <div><div class="site-name">ResearchRabbit</div><div class="tagline">related papers / citation maps / trend tracking</div></div>
+              <a href="https://www.researchrabbit.ai/" target="_blank" rel="noopener noreferrer" class="btn-link">造訪網站 →</a>
+            </div>
+            <p class="description">從幾篇種子論文出發，擴展相關論文與引文網絡。適合在進入陌生主題時先建立地圖。</p>
+          </div>
+          <div class="best-for"><strong>最適合：</strong>研究缺口、相近方法與文獻脈絡。</div>
+        </article>
+        <article class="card">
+          <div>
+            <span class="priority p3">視覺化</span>
+            <div class="card-header">
+              <div><div class="site-name">Connected Papers</div><div class="tagline">visual graph of related papers</div></div>
+              <a href="https://www.connectedpapers.com/" target="_blank" rel="noopener noreferrer" class="btn-link">造訪網站 →</a>
+            </div>
+            <p class="description">視覺化相近論文關係。適合快速理解一篇核心論文周圍的研究群落。</p>
+          </div>
+          <div class="best-for"><strong>最適合：</strong>入門某個主題前建立直覺。</div>
+        </article>
+        <article class="card">
+          <div>
+            <span class="priority p3">大型索引</span>
+            <div class="card-header">
+              <div><div class="site-name">OpenAlex</div><div class="tagline">open scholarly graph / API</div></div>
+              <a href="https://openalex.org/" target="_blank" rel="noopener noreferrer" class="btn-link">造訪網站 →</a>
+            </div>
+            <p class="description">開放學術知識圖譜，可查 works、authors、venues、concepts。較適合做資料分析或自動化文獻管線。</p>
+          </div>
+          <div class="best-for"><strong>最適合：</strong>建立自己的論文資料庫或 RAG 索引。</div>
+        </article>
+        <article class="card">
+          <div>
+            <span class="priority p3">搜尋提醒</span>
+            <div class="card-header">
+              <div><div class="site-name">Google Scholar Alerts</div><div class="tagline">keyword / author / citation alerts</div></div>
+              <a href="https://scholar.google.com/scholar_alerts" target="_blank" rel="noopener noreferrer" class="btn-link">造訪網站 →</a>
+            </div>
+            <p class="description">適合追蹤特定關鍵字、作者或主題的新文章。缺點是噪音較高，需要用精準關鍵字。</p>
+          </div>
+          <div class="best-for"><strong>最適合：</strong>補抓非 arXiv 或跨領域論文。</div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="labs">
+      <h2 class="section-title">5. 頂級 AI 研究機構與官方研究入口</h2>
+      <p class="section-intro">適合追蹤模型報告、system card、安全評測、產品背後的研究主線。</p>
+      <div class="grid">
+        <article class="card"><div><div class="card-header"><div><div class="site-name">OpenAI Research</div><div class="tagline">models / safety / system cards</div></div><a href="https://openai.com/research" target="_blank" rel="noopener noreferrer" class="btn-link">造訪網站 →</a></div><p class="description">追蹤 OpenAI 的研究報告、模型能力、安全與系統文件。</p></div><div class="best-for"><strong>最適合：</strong>模型能力與產品研究脈絡。</div></article>
+        <article class="card"><div><div class="card-header"><div><div class="site-name">Google DeepMind Research</div><div class="tagline">Gemini / science AI / infrastructure</div></div><a href="https://deepmind.google/research/
