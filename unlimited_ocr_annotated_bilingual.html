@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Unlimited OCR Works｜雙欄論文批注</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Lora:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --nav:#0b1f3a;--paper:#f7f3ea;--card:#ffffff;--ink:#263238;--muted:#637083;--line:#d9d1c3;
+  --thesis:#fff2a8;--term:#ffd5d5;--evidence:#d9ebff;--limit:#dff2df;--method:#eadcff;
+  --blue:#2b6cb0;--green:#1f7a4d;--red:#b23b3b;--purple:#6b46c1;--yellow:#9b7a00;
+}
+*{box-sizing:border-box} html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"IBM Plex Sans",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.72}
+a{color:#1d4ed8;text-decoration:none} a:hover{text-decoration:underline}
+.topbar{background:linear-gradient(135deg,#07182d,#0b1f3a 55%,#123b66);color:#f8fafc;padding:28px 22px 18px;position:sticky;top:0;z-index:20;box-shadow:0 4px 18px rgba(7,24,45,.24)}
+.topbar h1{margin:0 0 6px;font-size:26px;letter-spacing:.2px}.topbar p{margin:2px 0;color:#dbeafe}.meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}.pill{border:1px solid rgba(255,255,255,.22);border-radius:999px;padding:5px 10px;background:rgba(255,255,255,.08);font-size:13px}
+.legend{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.legend span{border-radius:6px;padding:4px 8px;color:#172033;font-size:12px}.lg-y{background:var(--thesis)}.lg-r{background:var(--term)}.lg-b{background:var(--evidence)}.lg-g{background:var(--limit)}.lg-p{background:var(--method)}
+.section-nav{position:sticky;top:142px;z-index:15;background:#ffffffee;backdrop-filter:blur(8px);border-bottom:1px solid #e6dfd4;padding:9px 18px;overflow:auto;white-space:nowrap}.section-nav a{font-size:13px;margin-right:14px;color:#334155;font-weight:600}
+.wrap{max-width:1220px;margin:0 auto;padding:26px 18px 70px}.panel{background:var(--card);border:1px solid #e7decf;border-radius:14px;padding:22px;margin:0 0 22px;box-shadow:0 8px 22px rgba(37,45,58,.06)}
+h2{font-size:22px;margin:0 0 14px;color:#10213a}h3{font-size:18px;margin:20px 0 10px;color:#1f3b5d}.small{color:var(--muted);font-size:13px}.score-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}.score{background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:12px}.score b{display:block;color:#0f172a}.score .num{font-size:24px;font-weight:700;color:#0b3b73}.level{background:#eaf2ff;border-left:5px solid var(--blue);padding:14px;border-radius:8px;margin-top:14px}
+.matrix{width:100%;border-collapse:collapse;font-size:14px}.matrix th,.matrix td{border:1px solid #e6dfd4;padding:8px;vertical-align:top}.matrix th{background:#f1ede5;text-align:left}
+.two-col{display:grid;grid-template-columns:minmax(0,1.23fr) minmax(310px,.77fr);gap:18px;align-items:start}.para{background:var(--card);border:1px solid #e6dfd4;border-radius:12px;padding:18px;margin-bottom:16px}.en{font-family:"Lora",serif;font-size:15.8px;color:#15202b}.zh{margin-top:13px;border-top:1px solid #ded6c9;background:#f0ece2;border-left:4px solid #b7a98f;padding:12px 14px;font-size:15px;color:#2b2b2b}.note{background:#fbfdff;border-left:5px solid var(--blue);border-radius:10px;padding:14px;margin-bottom:16px;border-top:1px solid #e2e8f0;border-right:1px solid #e2e8f0;border-bottom:1px solid #e2e8f0}.note h4{margin:0 0 6px;color:#183a59}.note p{margin:6px 0;font-size:14px}.hl-thesis{background:var(--thesis);padding:0 2px;border-radius:3px}.hl-term{background:var(--term);padding:0 2px;border-radius:3px}.hl-evidence{background:var(--evidence);padding:0 2px;border-radius:3px}.hl-limit{background:var(--limit);padding:0 2px;border-radius:3px}.hl-method{background:var(--method);padding:0 2px;border-radius:3px}.callout{border-left:5px solid var(--green);background:#f0fff4;padding:14px;border-radius:8px}.warning{border-left:5px solid var(--red);background:#fff7f7;padding:14px;border-radius:8px}.kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;background:#f1f5f9;border:1px solid #d8e0ea;border-radius:5px;padding:1px 5px;font-size:13px}
+.footergrid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.footerbox{background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:14px}
+@media(max-width:860px){.topbar{position:static}.section-nav{top:0}.two-col,.score-grid,.footergrid{grid-template-columns:1fr}.wrap{padding:16px 12px}.topbar h1{font-size:22px}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <h1>Unlimited OCR Works｜論文雙欄批注</h1>
+  <p>主題：One-shot long-horizon parsing、OCR、Reference Sliding Window Attention、KV cache 壓縮</p>
+  <div class="meta">
+    <span class="pill">arXiv:2606.23050</span><span class="pill">Baidu Inc.</span><span class="pill">Submitted: 2026-06-22</span><span class="pill">cs.CV / cs.CL</span><span class="pill">Code / model: available</span>
+  </div>
+  <div class="legend">
+    <span class="lg-y">黃色：核心論點</span><span class="lg-r">紅色：關鍵概念</span><span class="lg-b">藍色：實證證據</span><span class="lg-g">綠色：限制 / 讓步</span><span class="lg-p">紫色：方法論</span>
+  </div>
+</header>
+<nav class="section-nav">
+  <a href="#screen">價值初篩</a><a href="#abstract">Abstract</a><a href="#intro">Introduction</a><a href="#method">Method</a><a href="#experiments">Experiments</a><a href="#results">Results</a><a href="#limitations">Limitations</a><a href="#knowledge">新知萃取</a><a href="#argument">論證總覽</a>
+</nav>
+<main class="wrap">
+<section class="panel" id="screen">
+  <h2>論文價值初篩</h2>
+  <div class="score-grid">
+    <div class="score"><b>問題重要性</b><span class="num">4.5</span><div class="small">長文件 OCR / reference-based parsing 的推理記憶與速度瓶頸是真問題。</div></div>
+    <div class="score"><b>方法新穎性</b><span class="num">4.0</span><div class="small">R-SWA 不是全新注意力家族，但把固定 reference + causal output window 用在 OCR 解碼器上具明確設計價值。</div></div>
+    <div class="score"><b>可遷移性</b><span class="num">4.0</span><div class="small">對 ASR、翻譯、長文件 parser、agent 工具讀取都有可借鑑性。</div></div>
+    <div class="score"><b>證據強度</b><span class="num">3.5</span><div class="small">有 benchmark 與效率分析，但長文件評測含內部資料，外部可驗證性有限。</div></div>
+    <div class="score"><b>可操作性</b><span class="num">4.5</span><div class="small">GitHub、HF 模型、推理範例與 vLLM/SGLang 支援明確。</div></div>
+  </div>
+  <div class="level"><b>總分：20.5 / 25｜閱讀層級：值得深讀</b><br>這篇最值得學的是「reference token 不跟著 recurrent state 更新，output token 只保留近期 causal window」這個設計取捨。它不是一般 OCR benchmark 更新；真正新知在於把長序列生成的 KV cache 問題改寫成「固定 reference + 局部工作記憶」的 parsing 架構。</div>
+</section>
+<section class="panel">
+  <h2>基本資訊與取捨原則</h2>
+  <table class="matrix">
+    <tr><th>論文</th><td><i>Unlimited OCR Works: Welcome the Era of One-shot Long-horizon Parsing</i></td></tr>
+    <tr><th>作者 / 機構</th><td>Youyang Yin 等；Baidu Inc.</td></tr>
+    <tr><th>來源</th><td>Hugging Face Papers、arXiv PDF、GitHub / HF model page</td></tr>
+    <tr><th>程式碼 / 模型</th><td>GitHub: baidu/Unlimited-OCR；HF model: baidu/Unlimited-OCR；README 提供 Transformers、vLLM、SGLang 推理方式。</td></tr>
+    <tr><th>批注密度</th><td>完整深讀核心段落：Abstract、問題設定、R-SWA、KV cache、資料與評測、結果、限制。Related Work 與完整 references 僅保留論證角色，不逐段重刊。</td></tr>
+  </table>
+</section>
+<section class="panel" id="abstract"><h2>Abstract</h2><div class="two-col"><div>
+<div class="para"><div class="en"><span class="hl-term">End-to-end OCR</span> models, exemplified by DeepSeek OCR, use a <span class="hl-term">large language model as decoder</span>, but <span class="hl-limit">as the output sequence lengthens, the accumulated KV cache drives up memory consumption and progressively slows down generation</span>.</div><div class="zh">以 DeepSeek OCR 為代表的端到端 OCR，會利用大型語言模型作為解碼器來提升辨識能力；但輸出序列越長，KV cache 就越大，進而增加記憶體占用並拖慢生成速度。</div></div>
+<div class="para"><div class="en">We propose <span class="hl-thesis">Unlimited OCR</span>, a model designed to emulate human parsing working memory. Taking DeepSeek OCR as the baseline, we replace all attention layers in the decoder with <span class="hl-method">Reference Sliding Window Attention (R-SWA)</span>, which reduces attention computation costs while maintaining a <span class="hl-thesis">constant KV cache</span> throughout decoding.</div><div class="zh">作者提出 Unlimited OCR，企圖模仿人類在長時間抄寫或解析時的工作記憶。它以 DeepSeek OCR 為基線，將解碼器內所有注意力層替換成 R-SWA，使模型在解碼期間維持固定大小的 KV cache，並降低注意力計算成本。</div></div>
+<div class="para"><div class="en">By combining DeepSeek OCR's high-compression encoder with constant KV cache design, Unlimited OCR can <span class="hl-evidence">transcribe dozens of pages in a single forward pass under a standard maximum length of 32K</span>. R-SWA is claimed to be a <span class="hl-thesis">general-purpose parsing attention mechanism</span> applicable to OCR, ASR, translation, and similar reference-based tasks.</div><div class="zh">透過高壓縮率的視覺編碼器與固定 KV cache 設計，Unlimited OCR 宣稱能在 32K 最大長度限制下，一次前向傳播轉錄數十頁文件。作者進一步把 R-SWA 定位為通用的 parsing attention，可延伸到 ASR、翻譯等有固定參考來源的任務。</div></div>
+</div><aside>
+<div class="note"><h4>段落功能</h4><p>快速建立問題：LLM decoder 讓 OCR 更強，但長輸出造成 KV cache 與速度瓶頸。</p></div>
+<div class="note"><h4>邏輯角色</h4><p>提出本文的主方法與核心承諾：用 R-SWA 讓解碼端記憶體不隨生成長度線性成長。</p></div>
+<div class="note"><h4>潛在漏洞</h4><p>「Unlimited」是命名策略，論文本身後面承認受 32K context 與 prefill 長度限制，不能字面理解為無限。</p></div>
+</aside></div></section>
+<section class="panel" id="intro"><h2>Introduction</h2><div class="two-col"><div>
+<div class="para"><div class="en">Humans can transcribe hundreds of pages or translate hours-long audio, yet <span class="hl-limit">no existing OCR model can parse even tens of pages in a single forward pass</span>. Current models usually process documents page by page, resetting memory each time.</div><div class="zh">人類可以連續抄寫大量頁面或處理長時間語音，但現有 OCR 模型通常無法在單次前向傳播中解析數十頁文件，只能逐頁處理並在每一步重置記憶。</div></div>
+<div class="para"><div class="en">The for-loop paradigm <span class="hl-limit">fragments a coherent long-horizon process into isolated short tasks</span> managed by an external scheduler. It works to some extent, but remains an engineering workaround.</div><div class="zh">逐頁 for-loop 處理把本來連續的長程任務切碎成一個個短任務，由外部排程器維持流程。這能解決工程需求，但不是模型本身具備長程解析能力。</div></div>
+<div class="para"><div class="en">When copying, humans do not re-scan the entire history; they attend to the source text, recent context, and the next item. This motivates an attention pattern that is <span class="hl-method">neither full attention nor linear attention</span>: reference tokens remain visible, while recent outputs form a bounded working memory.</div><div class="zh">人類抄寫時不會反覆讀完整歷史，而是看原文、剛寫下的局部上下文與下一個目標。作者因此主張需要一種不同於 full attention 與 linear attention 的模式：參考來源持續可見，輸出歷史只保留近期工作記憶。</div></div>
+</div><aside>
+<div class="note"><h4>段落功能</h4><p>把 OCR 的技術瓶頸提升成長程解析問題，避免本文看起來只是單一模型優化。</p></div>
+<div class="note"><h4>論證技巧</h4><p>作者用「人類抄書」類比降低 R-SWA 的理解門檻。但這是啟發式比喻，不是認知科學證據。</p></div>
+<div class="note"><h4>可學習新知</h4><p>有些長文件任務不需要完整自回歸歷史；真正不可丟的是 reference source 與近端 progress state。</p></div>
+</aside></div></section>
+<section class="panel" id="method"><h2>Method｜R-SWA 與架構</h2><div class="two-col"><div>
+<div class="para"><div class="en">R-SWA attends to <span class="hl-method">all reference tokens—visual tokens and the prompt</span> while limiting output attention to the preceding <span class="hl-method">n tokens</span>, with n defaulting to 128. This keeps the model aware of the full image while tracking progress through a causal sliding window.</div><div class="zh">R-SWA 讓每個生成 token 都能看見所有參考 token，包括視覺 token 與 prompt；但對已生成輸出，只允許注意到前面固定寬度 n 的 causal sliding window。這讓模型既保有完整圖像資訊，又只用有限工作記憶追蹤進度。</div></div>
+<div class="para"><div class="en">Unlimited OCR adopts DeepSeek OCR as baseline, pairing <span class="hl-term">DeepEncoder</span> with a <span class="hl-term">MoE decoder</span> of 3B total and 500M activated parameters. DeepEncoder can compress a 1024×1024 PDF image to <span class="hl-evidence">256 tokens</span>.</div><div class="zh">模型沿用 DeepSeek OCR 架構：DeepEncoder 負責高壓縮率視覺編碼，MoE 解碼器總參數約 3B、啟動參數約 500M。DeepEncoder 可把 1024×1024 的 PDF 圖像壓縮到 256 個 token，這使多頁 prefill 不至於一開始就爆炸。</div></div>
+<div class="para"><div class="en">For a prefix segment P and decode window D<sub>n</sub>(t), R-SWA defines accessible positions as <span class="hl-method">N(t)=P∪D<sub>n</sub>(t)</span>. The prefix remains globally visible; the decode region slides locally.</div><div class="zh">在形式化上，R-SWA 把每一步可注意的位置定義為固定 prefix 與動態解碼視窗的聯集。prefix 對所有後續 token 全局可見；生成區只保留最近 n 個 token。</div></div>
+<div class="para"><div class="en">Standard MHA cache grows as <span class="hl-limit">C<sub>MHA</sub>(T)=L<sub>m</sub>+T</span>, while R-SWA retains <span class="hl-thesis">C<sub>R-SWA</sub>(T)=L<sub>m</sub>+min(n,T)≤L<sub>m</sub>+n</span>. Thus decode-side cache is upper-bounded by a constant window size.</div><div class="zh">標準 MHA 的 KV cache 隨生成長度 T 線性成長；R-SWA 則只保留固定 prefix 與最近 n 個輸出 token，因此上限是 Lm+n。這是全文最核心的技術點。</div></div>
+</div><aside>
+<div class="note"><h4>段落功能</h4><p>把直覺比喻落到可實作的注意力遮罩與 KV cache 管理。</p></div>
+<div class="note"><h4>關鍵判斷</h4><p>R-SWA 的價值取決於任務是否能接受「遠端輸出歷史不可直接注意」。OCR 這類 reference-dominant 任務較合理；開放式長文推理未必適合。</p></div>
+<div class="note"><h4>可遷移新知</h4><p>對任務先分類：固定參考源主導的 parsing 任務，可嘗試 reference-global + output-local attention；需要長程自我推理的任務，不能直接照搬。</p></div>
+</aside></div></section>
+<section class="panel" id="experiments"><h2>Experiments / Evaluation</h2><div class="two-col"><div>
+<div class="para"><div class="en">The authors construct <span class="hl-evidence">approximately 2 million document OCR samples</span> with a 9:1 ratio of single-page to multi-page data. Multi-page data are synthesized by concatenating single-page data, producing around <span class="hl-evidence">200k samples of 2 to 50 pages</span>, all packed into 32K tokens.</div><div class="zh">作者建構約 200 萬筆文件 OCR 樣本，其中單頁與多頁比例為 9:1；多頁資料由單頁資料串接合成，約 20 萬筆、每筆 2 到 50 頁，並全部打包到 32K token 序列內。</div></div>
+<div class="para"><div class="en">Training starts from the DeepSeek OCR checkpoint, continuing for <span class="hl-evidence">4,000 steps</span> with global batch size 256 and maximum sequence length 32K on <span class="hl-evidence">8×16 A800 GPUs</span>. The DeepEncoder is frozen and only LLM parameters are trained.</div><div class="zh">訓練從 DeepSeek OCR checkpoint 繼續，進行 4,000 steps，global batch size 256，最大序列長度 32K，硬體為 8×16 A800 GPU。DeepEncoder 被凍結，只訓練 LLM 參數。</div></div>
+<div class="para"><div class="en">Evaluation uses OmniDocBench v1.5/v1.6 and an in-house long-horizon OCR test set with documents of <span class="hl-evidence">2, 5, 10, 20, and 40+ pages</span>.</div><div class="zh">評測包含 OmniDocBench v1.5/v1.6，以及內部長文件 OCR 測試集，頁數分為 2、5、10、20 與 40+ 頁。</div></div>
+</div><aside>
+<div class="note"><h4>段落功能</h4><p>說明結果不是零訓練替換 attention，而是基於 DeepSeek OCR 續訓後所得。</p></div>
+<div class="note"><h4>證據限制</h4><p>多頁資料是合成串接，長文件測試集是 in-house。這削弱了「真實世界超長文件」泛化結論的強度。</p></div>
+<div class="note"><h4>可操作性</h4><p>訓練資源不低，但推理端已有公開模型與多種部署路徑，對使用者而言較容易先做 inference 驗證。</p></div>
+</aside></div></section>
+<section class="panel" id="results"><h2>Results / Efficiency</h2><div class="two-col"><div>
+<div class="para"><div class="en">On OmniDocBench v1.5, Unlimited OCR reaches <span class="hl-evidence">93.23 overall</span>, improving over DeepSeek OCR by <span class="hl-evidence">+6.22</span>. It also improves formula, table, and reading-order metrics.</div><div class="zh">在 OmniDocBench v1.5 上，Unlimited OCR 的 overall 達到 93.23，比 DeepSeek OCR 高 6.22，並在公式、表格與閱讀順序等指標上都有提升。</div></div>
+<div class="para"><div class="en">On OmniDocBench v1.6, Unlimited OCR achieves <span class="hl-evidence">93.92 overall</span>, slightly above Qianfan-OCR's 93.90 and close to other current SOTA models.</div><div class="zh">在 OmniDocBench v1.6 上，Unlimited OCR 達到 93.92，略高於 Qianfan-OCR 的 93.90，屬於同級 SOTA 區間；這部分優勢幅度其實很小，不能過度解讀。</div></div>
+<div class="para"><div class="en">For long-horizon OCR, the model maintains strong Distinct-n values up to <span class="hl-evidence">40+ pages</span>, with edit distance below 0.11 and Distinct-35 around 97%.</div><div class="zh">在長文件 OCR 測試中，模型在 40+ 頁仍維持約 97% 的 Distinct-35，edit distance 低於 0.11。這支持它至少能在多頁 one-shot OCR 上維持穩定輸出。</div></div>
+<div class="para"><div class="en">In efficiency analysis, at 6,000 generated tokens DeepSeek OCR's TPS declines, while Unlimited OCR remains stable and is <span class="hl-evidence">35% faster</span>.</div><div class="zh">效率分析顯示，輸出長度增加到 6,000 token 時，DeepSeek OCR 的 TPS 下降，而 Unlimited OCR 維持穩定，速度高出約 35%。這比短文件 benchmark 分數更能體現 R-SWA 的真正價值。</div></div>
+</div><aside>
+<div class="note"><h4>段落功能</h4><p>用 benchmark 與速度數據支撐「替換注意力不傷準確度，還能提高長輸出效率」。</p></div>
+<div class="note"><h4>最強證據</h4><p>效率曲線與 KV cache 公式互相呼應，能直接支持核心機制。</p></div>
+<div class="note"><h4>最弱證據</h4><p>v1.6 的 SOTA 差距極小；長文件資料非公開，難以確認是否含特定分布偏差。</p></div>
+</aside></div></section>
+<section class="panel" id="limitations"><h2>Limitations / Future Work</h2><div class="two-col"><div>
+<div class="para"><div class="en"><span class="hl-limit">The model cannot achieve truly unlimited parsing under a finite context length such as 32K</span>, because it is also constrained by prefill length. As pages accumulate, even compressed visual tokens make the prefill long.</div><div class="zh">作者承認模型無法在 32K 這種有限 context 下達到真正無限解析，因為 prefill 長度仍受頁數累積限制。即使視覺 token 被高壓縮，多頁文件仍會使 prefill 變長。</div></div>
+<div class="para"><div class="en">Future work includes training longer-context models such as <span class="hl-method">128K</span>, building a <span class="hl-method">prefill pool</span>, and allowing the model to fetch prefill KV chunks automatically, simulating humans flipping pages.</div><div class="zh">後續方向包括訓練 128K 等更長 context 模型、建立 prefill pool，並讓模型自動抓取 prefill KV chunks，類似人類翻頁查找來源。</div></div>
+</div><aside>
+<div class="note"><h4>段落功能</h4><p>收束本文命名上的誇張，承認 Unlimited 仍受 context / prefill 限制。</p></div>
+<div class="note"><h4>保留懷疑</h4><p>prefill pool 是有趣方向，但這會引入 retrieval / memory management 問題，不再只是 attention mask 的簡單替換。</p></div>
+</aside></div></section>
+<section class="panel" id="knowledge"><h2>本文新知萃取</h2>
+<div class="footergrid">
+<div class="footerbox"><h3>本文一句話主張</h3><p>對固定參考來源的長程 parsing 任務，模型不必保留完整生成歷史；只要固定看見 reference tokens，並保留最近輸出的 sliding window，就能在近似不損準確度下控制 KV cache 與速度。</p></div>
+<div class="footerbox"><h3>真正的新東西</h3><p>R-SWA 的任務化設計：reference 全局可見、output 局部可見、KV cache 用 queue 固定容量管理。核心不是「滑動視窗」本身，而是把 reference tokens 排除在狀態轉移外，避免視覺特徵被 recurrent 更新模糊。</p></div>
+<div class="footerbox"><h3>改變既有理解</h3><p>長文件 OCR 不一定要靠更長完整 context 或逐頁 pipeline；若任務的主要資訊在固定來源中，生成歷史可以被壓縮成短期進度狀態。</p></div>
+<div class="footerbox"><h3>可遷移做法</h3><p>可用於 PDF parser、ASR 逐段轉錄、字幕翻譯、文件轉 Markdown、長圖表解析、agent 讀大型 reference files。判斷條件是：reference 是否固定且完整？遠端輸出歷史是否只提供進度，而非必要推理依據？</p></div>
+<div class="footerbox"><h3>值得記住的術語</h3><p>Reference Sliding Window Attention、long-horizon parsing、constant KV cache、prefix global visibility、causal decode window、prefill pool、reference-based task。</p></div>
+<div class="footerbox"><h3>可實作 / 可復現任務</h3><p>1. 用 HF 模型跑多頁 PDF → Markdown。2. 比較一般 OCR pipeline 與 Unlimited OCR 在 10/20/40 頁文件的速度與錯誤。3. 測試小字、表格、公式、雜誌版面等失敗案例。4. 用相同概念設計 ASR 或翻譯的 reference-global attention 實驗。</p></div>
+</div>
+<h3>學習價值與風險</h3>
+<div class="callout"><b>最值得學：</b>把注意力設計回扣到任務結構，而不是單純把 context length 拉長。這對你做論文閱讀系統、agent 工具讀取、多文件解析，都有架構啟發。</div><br>
+<div class="warning"><b>最需要懷疑：</b>「Unlimited」容易誤導。真正限制轉移到了 prefill 長度、reference token 數、合成資料分布，以及長文件實測資料是否公開可驗證。</div>
+</section>
+<section class="panel" id="argument"><h2>底部論證結構總覽</h2>
+<table class="matrix">
+<tr><th>問題</th><td>端到端 OCR 使用 LLM decoder 後，長輸出造成 KV cache 與推理速度瓶頸；逐頁 pipeline 又會切斷連續解析狀態。</td></tr>
+<tr><th>論點</th><td>長程 OCR 其實只需要固定 reference + 近期輸出工作記憶，不需要完整生成歷史。</td></tr>
+<tr><th>方法</th><td>R-SWA：所有 reference tokens 全局可見，output tokens 僅保留 causal sliding window；KV cache 變成 Lm+n 的固定上界。</td></tr>
+<tr><th>證據</th><td>OmniDocBench v1.5/v1.6 成績、長文件 in-house 測試、TPS 與 kernel latency 分析。</td></tr>
+<tr><th>反駁 / 限制</th><td>仍受 32K context 與 prefill 長度限制；長文件資料非公開；合成多頁資料可能低估真實文件複雜度。</td></tr>
+<tr><th>結論</th><td>R-SWA 使 reference-based long-horizon parsing 更可行，但「真正無限」仍需 prefill pool 或更高階記憶管理。</td></tr>
+</table>
+<h3>一句話版本</h3><p>Unlimited OCR 的核心不是 OCR 本身，而是提出一種針對固定參考來源任務的長序列解碼記憶策略：reference 永遠可見，生成歷史只保留最近進度。</p>
+</section>
+</main>
+</body>
+</html>
