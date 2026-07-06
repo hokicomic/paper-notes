@@ -1,0 +1,418 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>TradingAgents 論文批注</title>
+  <style>
+    :root {
+      --navy:#0b1f35; --navy2:#102b48; --paper:#f7f2e8; --paper2:#fffaf0; --ink:#1f2933;
+      --muted:#697386; --line:#ddd3c2; --anno:#f9f6ee;
+      --yellow:#fff1a8; --red:#ffd0d0; --blue:#cfe8ff; --green:#d8f3dc; --purple:#e6d6ff;
+      --shadow:0 10px 30px rgba(10,31,53,.08);
+    }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { margin:0; background:var(--paper); color:var(--ink); font-family:"IBM Plex Sans", "Noto Sans TC", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; line-height:1.65; }
+    a { color:#0b5cab; text-decoration:none; border-bottom:1px solid rgba(11,92,171,.25); }
+    a:hover { border-bottom-color:#0b5cab; }
+    .topbar { background:linear-gradient(135deg,var(--navy),var(--navy2)); color:white; padding:30px 6vw 26px; }
+    .topbar h1 { margin:0 0 10px; font-size:clamp(1.7rem,3vw,3rem); line-height:1.12; letter-spacing:.01em; }
+    .subtitle { color:#cdd7e5; font-size:1rem; max-width:980px; }
+    .meta-grid { margin-top:22px; display:grid; grid-template-columns:repeat(4,minmax(150px,1fr)); gap:12px; }
+    .meta { background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.16); border-radius:14px; padding:12px; }
+    .meta .label { color:#aebed2; font-size:.78rem; letter-spacing:.06em; text-transform:uppercase; }
+    .meta .value { margin-top:3px; font-weight:650; }
+    .topbar a { color:#d7ecff; border-bottom-color:rgba(215,236,255,.35); }
+    .wrap { max-width:1320px; margin:0 auto; padding:0 22px 60px; }
+    .section-nav { position:sticky; top:0; z-index:20; background:rgba(247,242,232,.94); backdrop-filter:blur(10px); border-bottom:1px solid var(--line); padding:10px 6vw; display:flex; gap:8px; overflow:auto; }
+    .section-nav a { flex:0 0 auto; color:#17324d; background:#fffaf0; border:1px solid #e2d7c3; border-radius:999px; padding:7px 12px; font-size:.88rem; }
+    section { scroll-margin-top:70px; }
+    .panel { margin-top:24px; background:var(--paper2); border:1px solid var(--line); border-radius:20px; box-shadow:var(--shadow); padding:24px; }
+    .panel h2 { margin:0 0 12px; color:#122944; font-size:1.45rem; }
+    .notice { background:#fff8d6; border-left:5px solid #d9a900; padding:13px 15px; border-radius:12px; margin:16px 0; }
+    .score-table, .result-table { width:100%; border-collapse:collapse; margin-top:12px; font-size:.95rem; }
+    .score-table th, .score-table td, .result-table th, .result-table td { border:1px solid #dfd2bd; padding:10px; vertical-align:top; }
+    .score-table th, .result-table th { background:#efe6d4; text-align:left; }
+    .score-total { display:inline-flex; gap:10px; align-items:center; margin-top:12px; padding:10px 14px; border-radius:999px; background:#e7f0f8; color:#143b5d; font-weight:700; }
+    .legend { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
+    .legend span { border:1px solid rgba(0,0,0,.08); border-radius:999px; padding:5px 10px; font-size:.86rem; }
+    .thesis, .lg-thesis { background:var(--yellow); } .term, .lg-term { background:var(--red); } .evidence, .lg-evidence { background:var(--blue); } .limit, .lg-limit { background:var(--green); } .method, .lg-method { background:var(--purple); }
+    .hl { padding:.07em .22em; border-radius:.25em; box-decoration-break:clone; -webkit-box-decoration-break:clone; }
+    .pair { display:grid; grid-template-columns:minmax(0,1.18fr) minmax(300px,.82fr); gap:18px; margin-top:18px; align-items:start; }
+    .left-col { background:#fffaf0; border:1px solid var(--line); border-radius:18px; overflow:hidden; box-shadow:var(--shadow); }
+    .section-kicker { background:#efe6d4; color:#4a3b28; font-size:.82rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; padding:8px 14px; border-bottom:1px solid var(--line); }
+    .english { padding:17px 18px 12px; font-family:"Lora", Georgia, "Times New Roman", serif; font-size:1.03rem; }
+    .english p, .translation p { margin:0; }
+    .sep { height:1px; background:var(--line); margin:0 18px; }
+    .translation { margin:13px 18px 18px; background:#f0ece2; border-left:4px solid #baa883; padding:13px 14px; border-radius:10px; }
+    .annotation { background:var(--anno); border:1px solid var(--line); border-left:6px solid #536d93; border-radius:18px; padding:16px 18px; box-shadow:var(--shadow); }
+    .annotation h3 { margin:0 0 9px; color:#102b48; }
+    .annotation p { margin:8px 0; }
+    .extract-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }
+    .extract-card { background:#fffdf8; border:1px solid var(--line); border-radius:16px; padding:16px; }
+    .extract-card h3 { margin:0 0 8px; color:#163350; font-size:1.05rem; }
+    .argument { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; }
+    .arg-card { background:#fffdf8; border:1px solid var(--line); border-radius:16px; padding:16px; }
+    .arg-card h3 { margin:0 0 8px; color:#17324d; }
+    .footer { margin:34px auto 0; text-align:center; color:var(--muted); }
+    .home-link { display:inline-block; margin-top:10px; padding:10px 16px; border:1px solid #cdbfaa; border-radius:999px; background:#fffaf0; color:#17324d; }
+    code { background:#efe6d4; padding:.1em .35em; border-radius:.35em; }
+    ul { padding-left:1.2rem; }
+    li { margin:.35rem 0; }
+    @media (max-width:900px) {
+      .meta-grid, .pair, .extract-grid, .argument { grid-template-columns:1fr; }
+      .topbar { padding:24px 18px; }
+      .section-nav { padding:9px 18px; }
+      .wrap { padding:0 14px 44px; }
+      .panel { padding:18px; border-radius:16px; }
+      .english { font-size:1rem; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <h1>TradingAgents: Multi-Agents LLM Financial Trading Framework</h1>
+    <div class="subtitle">主題：多代理 LLM、金融交易、結構化 agent workflow、可解釋投研流程。本文整理重點放在論證結構與可遷移的 agent 系統設計，而非把短期回測結果視為投資結論。</div>
+    <div class="meta-grid">
+      <div class="meta"><div class="label">Authors</div><div class="value">Yijia Xiao, Edward Sun, Di Luo, Wei Wang</div></div>
+      <div class="meta"><div class="label">Year / Version</div><div class="value">Submitted 2024；arXiv v7, 2025-06-03</div></div>
+      <div class="meta"><div class="label">Source</div><div class="value">arXiv q-fin.TR / Hugging Face Papers</div></div>
+      <div class="meta"><div class="label">Links</div><div class="value"><a href="https://arxiv.org/abs/2412.20138" target="_blank" rel="noopener noreferrer">arXiv</a> · <a href="https://arxiv.org/pdf/2412.20138" target="_blank" rel="noopener noreferrer">PDF</a> · <a href="https://huggingface.co/papers/2412.20138" target="_blank" rel="noopener noreferrer">HF Paper</a> · <a href="https://github.com/TauricResearch/TradingAgents" target="_blank" rel="noopener noreferrer">GitHub</a></div></div>
+    </div>
+  </header>
+
+  <nav class="section-nav" aria-label="章節導航">
+    <a href="#abstract">Abstract</a><a href="#introduction">Introduction</a><a href="#method">Method</a><a href="#evaluation">Experiments / Evaluation</a><a href="#results">Results</a><a href="#caveat">Limitations</a><a href="#conclusion">Conclusion</a><a href="#argument-overview">論證總覽</a>
+  </nav>
+
+  <main class="wrap">
+    <section id="screening" class="panel">
+      <h2>論文價值初篩</h2>
+      <p><strong>總判斷：</strong>適合一般閱讀，但不建議為了回測績效本身深讀。本文真正值得看的，是如何把多代理系統設計成「投研組織流程」；最需要懷疑的是短期回測是否能外推到真實市場。</p>
+      <table class="score-table">
+        <thead><tr><th>評分項目</th><th>分數</th><th>理由</th></tr></thead>
+        <tbody>
+        <tr>
+          <td>問題重要性</td><td><strong>4/5</strong></td><td>金融交易是高風險、強多模態、強時序的決策場景；若能讓多代理架構更接近真實投研流程，問題本身有研究與工程價值。</td>
+        </tr>
+
+        <tr>
+          <td>方法新穎性</td><td><strong>3/5</strong></td><td>角色拆分、辯論、ReAct、工具調用都不是全新；較新的部分是把交易公司式組織、結構化報告與風控審核整合成一個端到端框架。</td>
+        </tr>
+
+        <tr>
+          <td>可遷移性</td><td><strong>4/5</strong></td><td>「專家角色 → 結構化狀態 → 對立辯論 → 風控審核 → 決策執行」可遷移到投研、供應鏈、法務風險、產品決策等流程。</td>
+        </tr>
+
+        <tr>
+          <td>證據強度</td><td><strong>2/5</strong></td><td>實驗有回測與多指標，但時間窗只有 2024/01/01–2024/03/29，股票範圍偏窄，基準偏傳統 rule-based，且高 Sharpe Ratio 作者自己也加註需謹慎。</td>
+        </tr>
+
+        <tr>
+          <td>可操作性</td><td><strong>4/5</strong></td><td>有 GitHub 程式碼、CLI、Package API、Docker 與多 LLM provider 設定；但資料來源與 LLM 非確定性使結果不容易逐字再現。</td>
+        </tr></tbody>
+      </table>
+      <div class="score-total">總分：17 / 25｜閱讀層級：適合一般閱讀，批注採重點式</div>
+      <div class="notice"><strong>取捨原則：</strong>原論文含 38 頁與大量附錄。此 HTML 選取 Abstract、問題設定、角色分工、溝通協議、實驗設計、主要結果、限制與結論等核心段落進行批注；參考文獻列表與長篇交易日誌不逐段批注。</div>
+      <div class="notice"><strong>英文欄說明：</strong>為避免大段重製原文，左欄英文採「核心短摘＋英文重述」方式整理，不是完整逐字轉錄。中文欄為繁體中文意譯與整理。</div>
+      <h3>標註圖例</h3>
+      <div class="legend">
+        <span class="lg-thesis">黃色 = 核心論點 / thesis</span>
+        <span class="lg-term">紅色 = 關鍵概念 / 術語</span>
+        <span class="lg-evidence">藍色 = 實證證據 / 資料</span>
+        <span class="lg-limit">綠色 = 讓步 / 反駁處理 / 限制</span>
+        <span class="lg-method">紫色 = 方法論說明</span>
+      </div>
+    </section>
+
+    <section id="abstract" class="panel"><h2>Abstract / Introduction / Method / Evaluation 逐段批注</h2></section>
+    
+    <article class="pair" id="pair-0">
+      <div class="left-col">
+        <div class="section-kicker">Abstract</div>
+        <div class="english"><p>The paper presents TradingAgents as a <span class="hl thesis">multi-agent LLM framework for stock trading</span>, designed to imitate a trading firm with analysts, researchers, traders, risk managers, and a fund manager. Its central claim is that <span class="hl method">role specialization plus structured coordination</span> can improve trading decisions and make reasoning more inspectable.</p></div>
+        <div class="sep"></div>
+        <div class="translation"><p>本文提出 TradingAgents，一個用於股票交易的多代理 LLM 框架。它把交易公司拆成分析師、研究員、交易員、風控與基金經理等角色，核心主張是：角色分工與結構化協作可以提升決策品質，並讓交易理由更容易檢查。</p></div>
+      </div>
+      <aside class="annotation">
+        <h3>批注</h3>
+        <p><strong>段落功能：</strong>提出主張</p>
+        <p><strong>邏輯角色：</strong>摘要先把問題域、方法形式與預期效果綁在一起：多代理不是單純增加 agent 數量，而是模擬交易公司的工作分工。</p>
+        <p><strong>論證技巧／潛在漏洞：</strong>摘要的說服力主要來自清楚的系統想像，但它把「更像組織」與「交易績效更好」連得很快；後者需要更嚴格的長期回測與資料洩漏檢查支撐。</p>
+        <p><strong>可學習的新知：</strong>學到的是一種 agentic system 設計模式：不是讓一個 LLM 做完整決策，而是把決策拆成情報蒐集、對立評估、風控審核與最終核准。</p>
+      </aside>
+    </article>
+    
+    <section id="introduction"></section>
+    
+    <article class="pair" id="pair-1">
+      <div class="left-col">
+        <div class="section-kicker">Introduction</div>
+        <div class="english"><p>The introduction frames finance as a complex environment shaped by <span class="hl term">fundamentals, sentiment, technical indicators, and macro events</span>. It argues that LLM agents are useful because financial decisions depend heavily on textual evidence and explanation.</p></div>
+        <div class="sep"></div>
+        <div class="translation"><p>導論把金融市場描述為一個由基本面、情緒、技術指標與總體事件共同影響的複雜場景。作者認為 LLM agent 有用，是因為許多金融判斷需要讀懂新聞、報告與社群訊號，也需要能解釋決策依據。</p></div>
+      </div>
+      <aside class="annotation">
+        <h3>批注</h3>
+        <p><strong>段落功能：</strong>引出問題</p>
+        <p><strong>邏輯角色：</strong>先說明為什麼金融交易適合拿來測試 LLM agent：它有多來源資料、多目標權衡與可解釋性需求。</p>
+        <p><strong>論證技巧／潛在漏洞：</strong>這段問題設定合理，但「LLM 擅長文字理解」不等於「LLM 適合交易」。交易還涉及市場效率、資料延遲、交易成本與風險約束，這些在導論沒有充分展開。</p>
+        <p><strong>可學習的新知：</strong>好的問題設定會先指出任務的資訊型態，而不是只說某領域很重要；本文把金融任務拆成文字理解、訊號整合與可解釋決策。</p>
+      </aside>
+    </article>
+    
+    
+    <article class="pair" id="pair-2">
+      <div class="left-col">
+        <div class="section-kicker">Introduction</div>
+        <div class="english"><p>The paper identifies two gaps: <span class="hl term">lack of realistic organizational modeling</span> and inefficient long-context communication. Existing agents often rely on long natural-language histories, creating a <span class="hl limit">telephone-effect-like loss of state</span>.</p></div>
+        <div class="sep"></div>
+        <div class="translation"><p>作者指出兩個缺口：第一，既有金融 agent 多半沒有模擬真實交易公司的組織分工；第二，很多多代理系統依賴冗長自然語言對話，隨著回合增加，狀態容易遺失、扭曲或被無關資訊稀釋。</p></div>
+      </div>
+      <aside class="annotation">
+        <h3>批注</h3>
+        <p><strong>段落功能：</strong>界定研究缺口</p>
+        <p><strong>邏輯角色：</strong>這是全文的關鍵轉折：問題不只在交易模型，而在多代理系統的組織與溝通介面。</p>
+        <p><strong>論證技巧／潛在漏洞：</strong>「組織建模不足」是合理缺口；但是否真能提升投資績效，需要與更強的 multi-agent 或 LLM baseline 比較，而不是主要和傳統技術指標策略比較。</p>
+        <p><strong>可學習的新知：</strong>多代理系統常見弱點不是沒有對話，而是對話太自由；狀態需要被壓縮成可查詢、可審核、可交接的結構化物件。</p>
+      </aside>
+    </article>
+    
+    <section id="method"></section>
+    
+    <article class="pair" id="pair-3">
+      <div class="left-col">
+        <div class="section-kicker">Method</div>
+        <div class="english"><p>TradingAgents assigns specialized roles: <span class="hl term">fundamental, sentiment, news, and technical analysts</span> gather evidence; bullish and bearish researchers debate; a trader proposes action; risk managers and a fund manager review the decision.</p></div>
+        <div class="sep"></div>
+        <div class="translation"><p>TradingAgents 將流程拆成多個角色：基本面、情緒、新聞與技術分析師負責蒐集與整理證據；多空研究員進行辯論；交易員提出交易行動；風控團隊與基金經理再審核是否執行。</p></div>
+      </div>
+      <aside class="annotation">
+        <h3>批注</h3>
+        <p><strong>段落功能：</strong>說明方法架構</p>
+        <p><strong>邏輯角色：</strong>這段把抽象的「多代理」落地為職責鏈：資料 → 評估 → 行動 → 風控 → 核准。它是本文最具遷移價值的部分。</p>
+        <p><strong>論證技巧／潛在漏洞：</strong>角色設計清楚，但角色數增加也會增加成本、延遲與錯誤累積。論文沒有充分證明每個角色都是必要的，也缺少細緻的角色消融。</p>
+        <p><strong>可學習的新知：</strong>角色不是越多越好；可學的是角色必須對應到真實決策鏈中的資訊責任與審核責任。</p>
+      </aside>
+    </article>
+    
+    <section id="workflow"></section>
+    
+    <article class="pair" id="pair-4">
+      <div class="left-col">
+        <div class="section-kicker">Method</div>
+        <div class="english"><p>The workflow uses a <span class="hl method">structured communication protocol</span>. Agents write concise reports into global state, and natural-language dialogue is reserved mainly for debates among researchers and risk managers.</p></div>
+        <div class="sep"></div>
+        <div class="translation"><p>本文的工作流重點是結構化溝通協議。各 agent 不只是互相聊天，而是把分析結果寫成精簡報告並存入全域狀態；自然語言對話主要保留給多空研究員與風控團隊的辯論環節。</p></div>
+      </div>
+      <aside class="annotation">
+        <h3>批注</h3>
+        <p><strong>段落功能：</strong>方法論說明</p>
+        <p><strong>邏輯角色：</strong>這段回應前面提出的「telephone effect」：透過結構化報告降低長對話造成的狀態污染。</p>
+        <p><strong>論證技巧／潛在漏洞：</strong>這是合理的工程選擇，但論文更需要量化：結構化報告到底減少多少錯誤？與純對話式 multi-agent 的差距多大？目前證據偏間接。</p>
+        <p><strong>可學習的新知：</strong>多代理設計可採「結構化 state 為主、自然語言辯論為輔」；這比單純把所有歷史塞進 prompt 更可維護。</p>
+      </aside>
+    </article>
+    
+    
+    <article class="pair" id="pair-5">
+      <div class="left-col">
+        <div class="section-kicker">Method</div>
+        <div class="english"><p>The implementation separates <span class="hl term">quick-thinking</span> and <span class="hl term">deep-thinking</span> models: faster models handle retrieval and summarization, while stronger reasoning models handle decision-making and evidence-based report writing.</p></div>
+        <div class="sep"></div>
+        <div class="translation"><p>實作上，作者把模型分為 quick-thinking 與 deep-thinking：較快模型負責資料檢索、摘要與表格轉文字；推理能力較強的模型負責決策、證據化報告與高複雜度推理。</p></div>
+      </div>
+      <aside class="annotation">
+        <h3>批注</h3>
+        <p><strong>段落功能：</strong>說明系統設計</p>
+        <p><strong>邏輯角色：</strong>這段把 LLM 成本與任務複雜度對齊，是從研究概念走向可部署系統的橋段。</p>
+        <p><strong>論證技巧／潛在漏洞：</strong>這個設計很實用，但沒有給出完整成本、延遲與準確性 trade-off；對真實交易系統而言，推理時間與資料新鮮度本身也是風險。</p>
+        <p><strong>可學習的新知：</strong>複雜 agent 系統應避免所有節點都用最強模型；應按任務深度分配模型能力，降低成本並保留關鍵節點的推理品質。</p>
+      </aside>
+    </article>
+    
+    <section id="evaluation"></section>
+    
+    <article class="pair" id="pair-6">
+      <div class="left-col">
+        <div class="section-kicker">Experiments / Evaluation</div>
+        <div class="english"><p>The evaluation backtests from <span class="hl evidence">2024-01-01 to 2024-03-29</span> on major technology stocks. The reported baselines include Buy-and-Hold, MACD, KDJ+RSI, ZMR, and SMA, with metrics covering CR, ARR, SR, and MDD.</p></div>
+        <div class="sep"></div>
+        <div class="translation"><p>實驗以 2024 年 1 月 1 日到 3 月 29 日的歷史資料進行回測，股票以大型科技股為主。比較基準包含買入持有、MACD、KDJ+RSI、ZMR 與 SMA；指標則包含累積報酬、年化報酬、夏普比率與最大回撤。</p></div>
+      </div>
+      <aside class="annotation">
+        <h3>批注</h3>
+        <p><strong>段落功能：</strong>提供實驗設計</p>
+        <p><strong>邏輯角色：</strong>這段提供結果可信度的基礎：時間窗、標的、baseline 與評估指標。</p>
+        <p><strong>論證技巧／潛在漏洞：</strong>最大的限制也在這裡：三個月窗口太短，且多為大型科技股；baseline 偏傳統技術指標，不足以證明它優於更強的 LLM trader、量化 ML 或專業回測框架。</p>
+        <p><strong>可學習的新知：</strong>讀 agent 論文時，不能只看框架圖；必須先檢查回測時間窗、交易成本、可用資料截止日、baseline 強度與是否有資料洩漏防護。</p>
+      </aside>
+    </article>
+    
+    
+    <article class="pair" id="pair-7">
+      <div class="left-col">
+        <div class="section-kicker">Experiments / Evaluation</div>
+        <div class="english"><p>The data pipeline combines <span class="hl evidence">prices, news, social sentiment, insider transactions, filings, profiles, earnings reports, and 60 technical indicators</span>. The authors state that decisions use only information available up to each trading day.</p></div>
+        <div class="sep"></div>
+        <div class="translation"><p>資料管線整合價格、新聞、社群情緒、內部人交易、公司申報、公司資料、財報與 60 種技術指標。作者宣稱 agent 每個交易日只使用當日以前可取得的資料，以避免前視偏差。</p></div>
+      </div>
+      <aside class="annotation">
+        <h3>批注</h3>
+        <p><strong>段落功能：</strong>提供資料證據</p>
+        <p><strong>邏輯角色：</strong>資料多模態性是本文聲稱優於傳統策略的主要理由之一：它不只看價格，也看文本與基本面。</p>
+        <p><strong>論證技巧／潛在漏洞：</strong>作者宣稱避免前視偏差，但金融 LLM 系統還可能有更細的洩漏問題：預訓練資料時間窗、新聞抓取時間戳、修正後財報、API 回填資料、模型知道未來事件等。這些需要更明確的 audit。</p>
+        <p><strong>可學習的新知：</strong>金融 agent 的資料正確性不只看「今天以前」；還要確認資料在當時是否真的可取得、是否被後來修訂，以及 LLM 是否可能從預訓練中記住測試期資訊。</p>
+      </aside>
+    </article>
+    
+    <section id="results"></section>
+    
+    <article class="pair" id="pair-8">
+      <div class="left-col">
+        <div class="section-kicker">Results</div>
+        <div class="english"><p>Reported results show TradingAgents achieving <span class="hl evidence">26.62% CR on AAPL, 24.36% on GOOGL, and 23.21% on AMZN</span>, outperforming the listed rule-based baselines in cumulative return and Sharpe Ratio.</p></div>
+        <div class="sep"></div>
+        <div class="translation"><p>論文報告的結果顯示，TradingAgents 在 AAPL、GOOGL 與 AMZN 的累積報酬分別為 26.62%、24.36% 與 23.21%，在作者列出的比較中高於規則型基準，夏普比率也明顯較高。</p></div>
+      </div>
+      <aside class="annotation">
+        <h3>批注</h3>
+        <p><strong>段落功能：</strong>呈現主要結果</p>
+        <p><strong>邏輯角色：</strong>這是作者支持「多代理框架有效」的核心實證段落。</p>
+        <p><strong>論證技巧／潛在漏洞：</strong>數字很亮眼，但也正因為亮眼，更需要保守看待。短期高報酬可能來自測試期間行情、標的選擇、交易成本假設、模型記憶或偶然性；不能直接解讀成可用交易策略。</p>
+        <p><strong>可學習的新知：</strong>高績效表格本身不是結論；真正要看的是結果是否跨市場、跨期間、跨模型、跨資料源、跨交易成本設定仍然穩定。</p>
+      </aside>
+    </article>
+    
+
+    <section class="panel">
+      <h2>主要結果表：只保留最影響判讀的數字</h2>
+      <table class="result-table">
+        <thead><tr><th>股票</th><th>TradingAgents CR</th><th>TradingAgents ARR</th><th>TradingAgents SR</th><th>TradingAgents MDD</th><th>判讀</th></tr></thead>
+        <tbody>
+          <tr><td>AAPL</td><td>26.62%</td><td>30.5%</td><td>8.21</td><td>0.91%</td><td>報酬與 SR 極高；需以短期窗口與資料洩漏風險重新審視。</td></tr>
+          <tr><td>GOOGL</td><td>24.36%</td><td>27.58%</td><td>6.39</td><td>1.69%</td><td>優於作者列出的 rule-based baseline，但 baseline 強度有限。</td></tr>
+          <tr><td>AMZN</td><td>23.21%</td><td>24.90%</td><td>5.60</td><td>2.11%</td><td>短期結果穩定漂亮；仍不足以推出長期 alpha。</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="caveat"></section>
+    
+    <article class="pair" id="pair-9">
+      <div class="left-col">
+        <div class="section-kicker">Limitations</div>
+        <div class="english"><p>The paper notes that the highest Sharpe Ratio exceeds an expected empirical range and attributes it partly to few pullbacks during the tested period. Future work aims to enable <span class="hl limit">longer backtesting</span> under budget constraints.</p></div>
+        <div class="sep"></div>
+        <div class="translation"><p>作者在註解中承認最高夏普比率超過一般經驗範圍，並認為可能與測試期間回撤很少有關；後續工作希望在有限成本下支援更長時間回測。</p></div>
+      </div>
+      <aside class="annotation">
+        <h3>批注</h3>
+        <p><strong>段落功能：</strong>承認限制</p>
+        <p><strong>邏輯角色：</strong>這段是全文最需要注意的自我修正：作者知道結果異常好，因此補充合理化與未來工作。</p>
+        <p><strong>論證技巧／潛在漏洞：</strong>這個註解提高了誠實度，但也暴露證據不足。若核心結果依賴短期少回撤窗口，則主張應更保守：它展示了一個研究框架，而不是證明一個穩健交易系統。</p>
+        <p><strong>可學習的新知：</strong>當論文主結果過度漂亮時，要找作者是否有自我限制、是否公開交易序列、是否做長期測試，以及是否承認成本與資料限制。</p>
+      </aside>
+    </article>
+    
+    <section id="explainability"></section>
+    
+    <article class="pair" id="pair-10">
+      <div class="left-col">
+        <div class="section-kicker">Results</div>
+        <div class="english"><p>The paper argues that LLM-based trading agents improve explainability because decisions are recorded as natural-language reports with reasoning, tool usage, and evidence traces.</p></div>
+        <div class="sep"></div>
+        <div class="translation"><p>作者認為，LLM 式交易 agent 的優勢之一是可解釋性：決策會以自然語言報告保存，包含推理、工具使用與證據線索，讓人能檢查與除錯。</p></div>
+      </div>
+      <aside class="annotation">
+        <h3>批注</h3>
+        <p><strong>段落功能：</strong>補充非績效貢獻</p>
+        <p><strong>邏輯角色：</strong>這段將本文價值從「賺錢」轉向「可檢查的決策流程」；這其實比短期報酬更可靠。</p>
+        <p><strong>論證技巧／潛在漏洞：</strong>自然語言理由不等於真實因果。LLM 可能產生合理但事後化的解釋，因此仍需要把理由連到可驗證資料與決策紀錄。</p>
+        <p><strong>可學習的新知：</strong>可解釋 agent 應保存工具調用、資料來源、決策版本與最終行動，而不只是生成一段看似合理的投資理由。</p>
+      </aside>
+    </article>
+    
+    <section id="actionability"></section>
+    
+    <article class="pair" id="pair-11">
+      <div class="left-col">
+        <div class="section-kicker">Actionability</div>
+        <div class="english"><p>The public repository provides installation, Docker usage, CLI interaction, package APIs, model-provider configuration, and a reproducibility warning that backtests may not match published numbers exactly.</p></div>
+        <div class="sep"></div>
+        <div class="translation"><p>公開 repo 提供安裝、Docker、互動式 CLI、Python package API、多模型 provider 設定，以及再現性提醒：由於 LLM、資料源與時間會變，回測不保證重現論文數字。</p></div>
+      </div>
+      <aside class="annotation">
+        <h3>批注</h3>
+        <p><strong>段落功能：</strong>說明可操作性</p>
+        <p><strong>邏輯角色：</strong>這段決定本文是否能從「概念」走到「可試作」。repo 的存在提高可操作性，但也明確要求讀者把它視為研究腳手架。</p>
+        <p><strong>論證技巧／潛在漏洞：</strong>開源是優點；但真正在金融研究中要可復現，還需要固定資料快照、固定模型版本、固定 prompt、固定 random seed 與完整交易成本設定。</p>
+        <p><strong>可學習的新知：</strong>研究工具與可交易策略是兩個層級。這篇比較適合作為多代理決策系統的工程參考，而不是直接拿來投資。</p>
+      </aside>
+    </article>
+    
+    <section id="conclusion"></section>
+    
+    <article class="pair" id="pair-12">
+      <div class="left-col">
+        <div class="section-kicker">Conclusion</div>
+        <div class="english"><p>The conclusion frames TradingAgents as a trading-firm simulation that uses specialized roles, debate, risk review, and multi-source data to improve decisions; future work points to live deployment and real-time data feeds.</p></div>
+        <div class="sep"></div>
+        <div class="translation"><p>結論將 TradingAgents 定位為一個模擬交易公司的多代理框架，透過專門角色、辯論、風控審核與多來源資料改善決策。未來工作則指向實盤環境、更多 agent 角色與即時資料流。</p></div>
+      </div>
+      <aside class="annotation">
+        <h3>批注</h3>
+        <p><strong>段落功能：</strong>總結貢獻</p>
+        <p><strong>邏輯角色：</strong>結論收束在「框架」與「未來部署」，沒有把結果過度寫成已成熟交易產品。</p>
+        <p><strong>論證技巧／潛在漏洞：</strong>最弱處仍是證據外推：從短期回測到 live trading 的距離很大。真實市場有滑價、流動性、監管、延遲、風控與模型漂移。</p>
+        <p><strong>可學習的新知：</strong>本文最值得學的是流程設計；最需要保留懷疑的是回測績效。</p>
+      </aside>
+    </article>
+    
+
+    <section id="new-knowledge" class="panel">
+      <h2>本文新知萃取</h2>
+      <div class="extract-grid">
+        <div class="extract-card"><h3>本文一句話主張</h3><p>把交易任務建模成一個有分析師、辯論者、交易員與風控的多代理組織，可以提升決策整合能力與可解釋性。</p></div>
+        <div class="extract-card"><h3>真正的新東西</h3><p>不是單一 agent 交易，而是「交易公司式組織建模」與「結構化狀態 + 局部自然語言辯論」的流程設計。</p></div>
+        <div class="extract-card"><h3>改變了哪些既有理解</h3><p>多代理系統的價值不一定來自更多對話，而可能來自更明確的角色責任、輸出格式與審核節點。</p></div>
+        <div class="extract-card"><h3>可遷移做法</h3><p>將決策流程拆成：資料蒐集者、對立觀點辯論者、決策者、風控審查者、最終核准者；每一環都輸出可追蹤報告。</p></div>
+        <div class="extract-card"><h3>關鍵術語</h3><p>Trading firm simulation、role specialization、structured communication protocol、agentic debate、risk management team、global agent state、ReAct prompting。</p></div>
+        <div class="extract-card"><h3>值得追讀方向</h3><p>MetaGPT 式結構化多代理、ReAct、LLM debate、FinGPT / BloombergGPT、LLM for alpha mining、金融回測資料洩漏檢查。</p></div>
+        <div class="extract-card"><h3>可實作任務</h3><p>用 repo 跑單一 ticker 分析；固定資料日期與模型設定；比較有無 researcher debate、有無 risk team、有無 structured report 的輸出差異。</p></div>
+        <div class="extract-card"><h3>程式碼／資料集狀態</h3><p>程式碼：有公開 GitHub。資料集：論文描述多來源資料管線，但未看到獨立固定資料集；重現時需處理 API、新聞與社群資料的時間一致性。</p></div>
+      </div>
+    </section>
+
+    <section id="argument-overview" class="panel">
+      <h2>底部論證結構總覽</h2>
+      <div class="argument">
+        <div class="arg-card"><h3>全文邏輯骨架</h3><p>問題：金融交易需要整合多來源訊號與風險。<br>論點：交易公司式多代理組織比單一 agent 更適合。<br>方法：分析師、研究員、交易員、風控、基金經理分工。<br>證據：短期多科技股回測優於 rule-based baseline。<br>限制：時間窗短、baseline 強度不足、資料洩漏與再現性需謹慎。<br>結論：框架值得作為研究腳手架，不宜直接視為交易策略。</p></div>
+        <div class="arg-card"><h3>核心主張一句話</h3><p>TradingAgents 主張：以結構化多代理組織模擬交易公司，能在整合多模態金融資訊時提高決策品質、風控與可解釋性。</p></div>
+        <div class="arg-card"><h3>論證最強處</h3><p>方法設計有清楚的組織隱喻與工程流程，能讓複雜決策被拆分、記錄與審核。</p></div>
+        <div class="arg-card"><h3>論證最弱處</h3><p>績效證據不足以支持強交易主張；短期回測與有限 baseline 容易高估系統能力。</p></div>
+        <div class="arg-card"><h3>最值得學習</h3><p>多代理系統應重視 state、文件、角色責任與審核節點，而不是只追求更多 agent 對話。</p></div>
+        <div class="arg-card"><h3>最需保留懷疑</h3><p>LLM 在金融任務中的解釋可能合理但不一定因果；回測績效尤其要防止資料洩漏、期間偏誤與成本低估。</p></div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>來源與可追溯連結</h2>
+      <ul>
+        <li><a href="https://arxiv.org/abs/2412.20138" target="_blank" rel="noopener noreferrer">arXiv 摘要頁：TradingAgents: Multi-Agents LLM Financial Trading Framework</a></li>
+        <li><a href="https://arxiv.org/pdf/2412.20138" target="_blank" rel="noopener noreferrer">arXiv PDF</a></li>
+        <li><a href="https://huggingface.co/papers/2412.20138" target="_blank" rel="noopener noreferrer">Hugging Face Paper Page</a></li>
+        <li><a href="https://github.com/TauricResearch/TradingAgents" target="_blank" rel="noopener noreferrer">GitHub Repository</a></li>
+      </ul>
+      <p class="notice"><strong>非投資建議：</strong>本整理只針對論文與系統設計進行學術分析，不構成任何投資、交易或財務建議。</p>
+    </section>
+
+    <footer class="footer">
+      <div>Generated as a single-file HTML for GitHub Pages. CSS is embedded; page is marked noindex.</div>
+      <a class="home-link" href="./index.html">← 回首頁</a>
+    </footer>
+  </main>
+</body>
+</html>
