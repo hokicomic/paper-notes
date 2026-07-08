@@ -3,7 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AI 論文追蹤與新知萃取導航｜更新版</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="googlebot" content="noindex, nofollow" />
+  <title>AI 論文追蹤與新知萃取導航｜2026-07-08 更新版</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; }
     :root {
@@ -164,7 +166,7 @@
     .p1 { background: #e6f4ea; color: #23613b; }
     .p2 { background: #e8f1ff; color: #1d4e89; }
     .p3 { background: #fff3d6; color: #7b4c00; }
-    .table-wrap { overflow-x: auto; }
+    .table-wrap { overflow-x: auto; margin-top: 18px; }
     table { border-collapse: collapse; width: 100%; background: #ffffff; border-radius: 12px; overflow: hidden; }
     th, td { padding: 11px 12px; border-bottom: 1px solid var(--border); vertical-align: top; text-align: left; font-size: 14px; }
     th { background: #edf4fb; color: #17395f; font-weight: 800; }
@@ -174,8 +176,10 @@
       border-left: 5px solid var(--navy-2);
       padding: 18px;
       border-radius: 0 12px 12px 0;
+      margin-bottom: 14px;
     }
-    .workflow h3 { margin-top: 0; color: var(--navy); }
+    .workflow.two { border-left-color: var(--green); }
+    .workflow h3, .subhead { margin-top: 0; color: var(--navy); }
     .workflow ol { margin: 0; padding-left: 22px; }
     .workflow li { margin: 8px 0; }
     .prompt-box {
@@ -189,9 +193,11 @@
       white-space: pre-wrap;
       line-height: 1.65;
     }
-    .small { font-size: 12px; color: var(--muted); }
     footer { text-align: center; color: #718096; margin-top: 32px; font-size: 12px; }
+    footer a { color: var(--blue); text-decoration: none; font-weight: 700; }
+    footer a:hover { text-decoration: underline; }
     @media (max-width: 760px) {
+      .topbar-inner { align-items: flex-start; }
       .grid { grid-template-columns: 1fr; }
       header.hero { padding: 28px 22px; }
       .card-header { flex-direction: column; align-items: flex-start; }
@@ -199,13 +205,14 @@
     }
   </style>
 </head>
-<body>
+<body id="top">
   <nav class="topbar">
     <div class="topbar-inner">
       <div class="brand">AI Paper Navigation</div>
       <div class="navlinks">
         <a href="#daily">每日入口</a>
         <a href="#primary">原始來源</a>
+        <a href="#china">中文／中國</a>
         <a href="#code">程式碼與評測</a>
         <a href="#maps">引文地圖</a>
         <a href="#labs">大廠研究</a>
@@ -216,17 +223,17 @@
 
   <main class="container">
     <header class="hero">
-      <h1>前沿 AI 研究與論文追蹤導航｜更新版</h1>
+      <h1>前沿 AI 研究與論文追蹤導航｜2026-07-08 更新版</h1>
       <p class="subtitle">用於快速抓取最新 AI 論文、判斷是否值得深讀、追蹤程式碼與資料集，並把高價值論文交給本專案做「價值初篩 → 新知萃取 → 雙欄批注 HTML」。</p>
       <div class="meta-row">
-        <span class="pill">更新日期：2026-07-05</span>
-        <span class="pill">用途：AI / ML / Agent / RAG / Multimodal / Benchmark</span>
-        <span class="pill">所有網站按鈕皆為可點擊連結</span>
+        <span class="pill">更新日期：2026-07-08</span>
+        <span class="pill">新增：ChinaRxiv / ChinaXiv / PubScholar / AMiner / OpenI</span>
+        <span class="pill">GitHub Pages：單檔 HTML、CSS 內嵌、noindex</span>
       </div>
     </header>
 
     <div class="notice">
-      <strong>使用原則：</strong>不要把所有來源都當成同等重要。每日只看「趨勢入口」，每週用「引文地圖」擴展主題，高價值論文才丟進本專案做完整 HTML 批注。低價值論文只做速讀卡。
+      <strong>使用原則：</strong>不要把所有來源都當成同等重要。每日只看「趨勢入口」，每週用「引文地圖」擴展主題，高價值論文才丟進本專案做完整 HTML 批注。中文與中國來源適合補抓研究動向，但預印本仍需交叉檢查正式發表、程式碼、資料集與實驗品質。
     </div>
 
     <section class="section" id="daily">
@@ -237,7 +244,10 @@
           <div>
             <span class="priority p1">每日必看</span>
             <div class="card-header">
-              <div><div class="site-name">Hugging Face Daily Papers</div><div class="tagline">社群投票、Daily / Weekly / Monthly</div></div>
+              <div>
+                <div class="site-name">Hugging Face Daily Papers</div>
+                <div class="tagline">社群投票、Daily / Weekly / Monthly</div>
+              </div>
               <a href="https://huggingface.co/papers" target="_blank" rel="noopener noreferrer" class="btn-link">造訪網站 →</a>
             </div>
             <p class="description">AI 社群熱門論文入口，可用 Daily、Weekly、Monthly 篩選，也常連到 arXiv、GitHub、Demo、模型或資料集。</p>
@@ -248,7 +258,10 @@
           <div>
             <span class="priority p1">趨勢補充</span>
             <div class="card-header">
-              <div><div class="site-name">Hugging Face Trending Papers</div><div class="tagline">熱門論文與社群互動</div></div>
+              <div>
+                <div class="site-name">Hugging Face Trending Papers</div>
+                <div class="tagline">熱門論文與社群互動</div>
+              </div>
               <a href="https://huggingface.co/papers/trending" target="_blank" rel="noopener noreferrer" class="btn-link">造訪網站 →</a>
             </div>
             <p class="description">適合看近期被社群大量討論的 AI 論文。若只想快速掌握主線，優先看這裡。</p>
@@ -259,7 +272,10 @@
           <div>
             <span class="priority p2">討論脈絡</span>
             <div class="card-header">
-              <div><div class="site-name">alphaXiv</div><div class="tagline">arXiv 論文討論與追蹤</div></div>
+              <div>
+                <div class="site-name">alphaXiv</div>
+                <div class="tagline">arXiv 論文討論與追蹤</div>
+              </div>
               <a href="https://www.alphaxiv.org/" target="_blank" rel="noopener noreferrer" class="btn-link">造訪網站 →</a>
             </div>
             <p class="description">可探索 trending papers、近期活動、作者追蹤與論文討論。適合看一篇論文是否真的引起研究社群反應。</p>
@@ -270,25 +286,44 @@
           <div>
             <span class="priority p2">個人化篩選</span>
             <div class="card-header">
-              <div><div class="site-name">arXiv Sanity Light</div><div class="tagline">arXiv 熱門與個人化推薦</div></div>
+              <div>
+                <div class="site-name">arXiv Sanity Light</div>
+                <div class="tagline">arXiv 熱門與個人化推薦</div>
+              </div>
               <a href="https://arxiv-sanity-lite.com/" target="_blank" rel="noopener noreferrer" class="btn-link">造訪網站 →</a>
             </div>
             <p class="description">適合快速看近期 arXiv 熱門論文與建立個人化篩選習慣。若服務不穩，請改用 Hugging Face Papers 與 arXiv 官方入口。</p>
           </div>
           <div class="best-for"><strong>最適合：</strong>作為每日掃描的第二來源。</div>
         </article>
+        <article class="card">
+          <div>
+            <span class="priority p3">實驗性入口</span>
+            <div class="card-header">
+              <div>
+                <div class="site-name">AiraXiv</div>
+                <div class="tagline">AI-driven open-access preprint platform</div>
+              </div>
+              <a href="https://airaxiv.com/" target="_blank" rel="noopener noreferrer" class="btn-link">造訪網站 →</a>
+            </div>
+            <p class="description">實驗性開放預印本平台，主打 AI 輔助分析、審閱與回饋。可觀察 AI 時代學術發布工具的演化。</p>
+          </div>
+          <div class="best-for"><strong>最適合：</strong>觀察新型學術出版與 AI reviewer / AI scientist 方向。</div>
+        </article>
       </div>
     </section>
-
     <section class="section" id="primary">
       <h2 class="section-title">2. 原始論文來源：直接抓最新論文</h2>
-      <p class="section-intro">這些入口比聚合平台更原始，適合你要找「今天剛上架」或特定子領域論文。</p>
+      <p class="section-intro">這些入口比聚合平台更原始，適合找「今天剛上架」或特定子領域論文。</p>
       <div class="grid">
         <article class="card">
           <div>
             <span class="priority p1">原始來源</span>
             <div class="card-header">
-              <div><div class="site-name">arXiv cs.AI Recent</div><div class="tagline">Artificial Intelligence</div></div>
+              <div>
+                <div class="site-name">arXiv cs.AI Recent</div>
+                <div class="tagline">Artificial Intelligence</div>
+              </div>
               <a href="https://arxiv.org/list/cs.AI/recent" target="_blank" rel="noopener noreferrer" class="btn-link">造訪網站 →</a>
             </div>
             <p class="description">AI 類別最新論文列表。適合找 agent、planning、reasoning、AI system 等較廣義 AI 論文。</p>
@@ -299,7 +334,10 @@
           <div>
             <span class="priority p1">LLM/NLP</span>
             <div class="card-header">
-              <div><div class="site-name">arXiv cs.CL Recent</div><div class="tagline">Computation and Language</div></div>
+              <div>
+                <div class="site-name">arXiv cs.CL Recent</div>
+                <div class="tagline">Computation and Language</div>
+              </div>
               <a href="https://arxiv.org/list/cs.CL/recent" target="_blank" rel="noopener noreferrer" class="btn-link">造訪網站 →</a>
             </div>
             <p class="description">NLP、LLM、RAG、alignment、evaluation、language agent 相關論文常出現在這裡。</p>
@@ -310,7 +348,10 @@
           <div>
             <span class="priority p2">多模態/視覺</span>
             <div class="card-header">
-              <div><div class="site-name">arXiv cs.CV Recent</div><div class="tagline">Computer Vision and Pattern Recognition</div></div>
+              <div>
+                <div class="site-name">arXiv cs.CV Recent</div>
+                <div class="tagline">Computer Vision and Pattern Recognition</div>
+              </div>
               <a href="https://arxiv.org/list/cs.CV/recent" target="_blank" rel="noopener noreferrer" class="btn-link">造訪網站 →</a>
             </div>
             <p class="description">CV、VLM、image/video generation、multimodal grounding、visual reasoning 的主要新論文來源。</p>
@@ -321,7 +362,10 @@
           <div>
             <span class="priority p2">機器學習</span>
             <div class="card-header">
-              <div><div class="site-name">arXiv cs.LG Recent</div><div class="tagline">Machine Learning</div></div>
+              <div>
+                <div class="site-name">arXiv cs.LG Recent</div>
+                <div class="tagline">Machine Learning</div>
+              </div>
               <a href="https://arxiv.org/list/cs.LG/recent" target="_blank" rel="noopener noreferrer" class="btn-link">造訪網站 →</a>
             </div>
             <p class="description">較偏 ML 方法、訓練、robustness、optimization、representation learning 的新論文來源。</p>
@@ -332,7 +376,10 @@
           <div>
             <span class="priority p2">統計學習</span>
             <div class="card-header">
-              <div><div class="site-name">arXiv stat.ML Recent</div><div class="tagline">Machine Learning Statistics</div></div>
+              <div>
+                <div class="site-name">arXiv stat.ML Recent</div>
+                <div class="tagline">Machine Learning Statistics</div>
+              </div>
               <a href="https://arxiv.org/list/stat.ML/recent" target="_blank" rel="noopener noreferrer" class="btn-link">造訪網站 →</a>
             </div>
             <p class="description">偏統計機器學習、推論、泛化、可靠性與評估方法。適合補足 AI 論文的理論與證據面。</p>
@@ -341,28 +388,179 @@
         </article>
         <article class="card">
           <div>
-            <span class="priority p2">會議論文</span>
+            <span class="priority p1">會議論文</span>
             <div class="card-header">
-              <div><div class="site-name">OpenReview</div><div class="tagline">ICLR / ICML / NeurIPS 等開放審稿場域</div></div>
+              <div>
+                <div class="site-name">OpenReview</div>
+                <div class="tagline">ICLR / ICML / NeurIPS 等開放審稿場域</div>
+              </div>
               <a href="https://openreview.net/" target="_blank" rel="noopener noreferrer" class="btn-link">造訪網站 →</a>
             </div>
             <p class="description">可以看投稿論文、審稿意見、作者回應與會議分組。它能補上 arXiv 沒有的「同行質疑」脈絡。</p>
           </div>
           <div class="best-for"><strong>最適合：</strong>判斷論文限制、爭議與審稿評價。</div>
         </article>
+        <article class="card">
+          <div>
+            <span class="priority p3">工程預印本</span>
+            <div class="card-header">
+              <div>
+                <div class="site-name">TechRxiv</div>
+                <div class="tagline">Engineering / Computer Science preprints</div>
+              </div>
+              <a href="https://www.techrxiv.org/" target="_blank" rel="noopener noreferrer" class="btn-link">造訪網站 →</a>
+            </div>
+            <p class="description">IEEE 支援的工程與電腦科學預印本入口。AI 系統、邊緣運算、通訊與硬體相關主題可補充搜尋。</p>
+          </div>
+          <div class="best-for"><strong>最適合：</strong>補抓 AI + 工程／通訊／硬體交界論文。</div>
+        </article>
       </div>
     </section>
-
+    <section class="section" id="china">
+      <h2 class="section-title">3. 中文與中國 AI 論文入口</h2>
+      <p class="section-intro">這一區用來補抓中國研究團隊、中文解讀、中文預印本與本土開源平台。重點是補充，不要取代 arXiv / OpenReview / GitHub 查證。</p>
+      <div class="grid">
+        <article class="card">
+          <div>
+            <span class="priority p1">新增重點</span>
+            <div class="card-header">
+              <div>
+                <div class="site-name">ChinaRxiv AI / CS</div>
+                <div class="tagline">ChinaXiv 英譯與 AI/CS 篩選</div>
+              </div>
+              <a href="https://chinarxiv.org/?category=ai_cs" target="_blank" rel="noopener noreferrer" class="btn-link">造訪網站 →</a>
+            </div>
+            <p class="description">使用者指定新增。這是 ChinaXiv 預印本的英文翻譯與分類瀏覽入口，可直接看 AI / CS 類別、PDF 與摘要。</p>
+          </div>
+          <div class="best-for"><strong>最適合：</strong>掃描中國 AI / CS 預印本，特別適合搭配 RSS/Atom 訂閱。</div>
+        </article>
+        <article class="card">
+          <div>
+            <span class="priority p2">全站入口</span>
+            <div class="card-header">
+              <div>
+                <div class="site-name">ChinaRxiv Recent</div>
+                <div class="tagline">Translated papers from ChinaXiv</div>
+              </div>
+              <a href="https://chinarxiv.org/" target="_blank" rel="noopener noreferrer" class="btn-link">造訪網站 →</a>
+            </div>
+            <p class="description">ChinaRxiv 全站近期論文入口，涵蓋 AI/CS、Earth &amp; Space、Biology、Library Science 與其他領域。</p>
+          </div>
+          <div class="best-for"><strong>最適合：</strong>跨領域尋找 AI 應用論文，例如 AI + 生醫、AI + 通訊、AI + 工程。</div>
+        </article>
+        <article class="card">
+          <div>
+            <span class="priority p1">官方來源</span>
+            <div class="card-header">
+              <div>
+                <div class="site-name">ChinaXiv 中國科學院科技論文預發布平台</div>
+                <div class="tagline">官方中文預印本平台</div>
+              </div>
+              <a href="https://chinaxiv.org/home.htm" target="_blank" rel="noopener noreferrer" class="btn-link">造訪網站 →</a>
+            </div>
+            <p class="description">中國科學院文獻情報中心營運的科技論文預發布平台。頁面明確提示預印本經初步審核，但未經嚴格同行評審。</p>
+          </div>
+          <div class="best-for"><strong>最適合：</strong>查中國研究團隊的原始中文預印本與官方資料。</div>
+        </article>
+        <article class="card">
+          <div>
+            <span class="priority p2">官方分類</span>
+            <div class="card-header">
+              <div>
+                <div class="site-name">ChinaXiv 計算機科學</div>
+                <div class="tagline">官方 Computer Science 分類</div>
+              </div>
+              <a href="https://chinaxiv.org/user/search.htm?filterField=domain&amp;type=filter&amp;value=243" target="_blank" rel="noopener noreferrer" class="btn-link">造訪網站 →</a>
+            </div>
+            <p class="description">ChinaXiv 官方「計算機科學」分類頁，可按提交時間、主題、作者與機構篩選。</p>
+          </div>
+          <div class="best-for"><strong>最適合：</strong>找中文 CS / AI 預印本，但需額外判斷品質與同行審查狀態。</div>
+        </article>
+        <article class="card">
+          <div>
+            <span class="priority p2">公益搜尋</span>
+            <div class="card-header">
+              <div>
+                <div class="site-name">PubScholar 公益學術平台</div>
+                <div class="tagline">中國科學院公益學術檢索</div>
+              </div>
+              <a href="https://pubscholar.cn/" target="_blank" rel="noopener noreferrer" class="btn-link">造訪網站 →</a>
+            </div>
+            <p class="description">公益性學術資源檢索平台，適合補查中文期刊、預印本、學位論文、專利與可取得全文資源。</p>
+          </div>
+          <div class="best-for"><strong>最適合：</strong>補抓非 arXiv 的中文學術資源與全文入口。</div>
+        </article>
+        <article class="card">
+          <div>
+            <span class="priority p2">學術圖譜</span>
+            <div class="card-header">
+              <div>
+                <div class="site-name">AMiner</div>
+                <div class="tagline">AI 科研助手 / 學者與文獻圖譜</div>
+              </div>
+              <a href="https://www.aminer.cn/" target="_blank" rel="noopener noreferrer" class="btn-link">造訪網站 →</a>
+            </div>
+            <p class="description">清華系學術搜尋與科技情報分析平台，適合查作者、機構、論文、研究方向與學術關係。</p>
+          </div>
+          <div class="best-for"><strong>最適合：</strong>追蹤中國 AI 作者、實驗室與研究網絡。</div>
+        </article>
+        <article class="card">
+          <div>
+            <span class="priority p3">中文解讀</span>
+            <div class="card-header">
+              <div>
+                <div class="site-name">PaperWeekly｜機器之心</div>
+                <div class="tagline">AI 論文推薦、解讀、討論</div>
+              </div>
+              <a href="https://www.jiqizhixin.com/columns/paperweekly" target="_blank" rel="noopener noreferrer" class="btn-link">造訪網站 →</a>
+            </div>
+            <p class="description">中文 AI 論文解讀欄目。適合找入門解讀與中文社群關注點，但不可取代原文與程式碼查證。</p>
+          </div>
+          <div class="best-for"><strong>最適合：</strong>降低入門成本，快速理解某些方法的中文脈絡。</div>
+        </article>
+        <article class="card">
+          <div>
+            <span class="priority p3">模型榜單</span>
+            <div class="card-header">
+              <div>
+                <div class="site-name">機器之心 SOTA！模型</div>
+                <div class="tagline">模型與論文資訊入口</div>
+              </div>
+              <a href="https://sota.jiqizhixin.com/" target="_blank" rel="noopener noreferrer" class="btn-link">造訪網站 →</a>
+            </div>
+            <p class="description">偏模型、榜單與 AI 資訊整理。適合作為輔助發現來源，不宜作為嚴格學術證據來源。</p>
+          </div>
+          <div class="best-for"><strong>最適合：</strong>補充中文模型資訊與主題線索。</div>
+        </article>
+        <article class="card">
+          <div>
+            <span class="priority p2">中國開源</span>
+            <div class="card-header">
+              <div>
+                <div class="site-name">OpenI 啟智社區</div>
+                <div class="tagline">AI 程式碼、資料集、模型與算力平台</div>
+              </div>
+              <a href="https://www.openi.org.cn/" target="_blank" rel="noopener noreferrer" class="btn-link">造訪網站 →</a>
+            </div>
+            <p class="description">中國 AI 開源開放平台，提供程式碼託管、資料集管理、模型訓練／推理與算力環境。</p>
+          </div>
+          <div class="best-for"><strong>最適合：</strong>查中國研究專案是否有模型、資料集或實作。</div>
+        </article>
+      </div>
+    </section>
     <section class="section" id="code">
-      <h2 class="section-title">3. 程式碼、資料集、Benchmark 與可復現性</h2>
-      <p class="section-intro">如果你的目標是學到可遷移的新方法，這一類比純摘要更重要。</p>
+      <h2 class="section-title">4. 程式碼、資料集、Benchmark 與可復現性</h2>
+      <p class="section-intro">如果目標是學到可遷移的新方法，這一類比純摘要更重要。</p>
       <div class="grid">
         <article class="card">
           <div>
             <span class="priority p1">可復現</span>
             <div class="card-header">
-              <div><div class="site-name">Papers with Code</div><div class="tagline">論文、程式碼、資料集、排行榜</div></div>
-              <a href="https://paperswithcode.co/" target="_blank" rel="noopener noreferrer" class="btn-link">造訪網站 →</a>
+              <div>
+                <div class="site-name">Papers with Code</div>
+                <div class="tagline">論文、程式碼、資料集、排行榜</div>
+              </div>
+              <a href="https://paperswithcode.com/" target="_blank" rel="noopener noreferrer" class="btn-link">造訪網站 →</a>
             </div>
             <p class="description">用來確認論文是否有 code、dataset、method 與 leaderboard。若只想讀能實作的論文，這是重要篩選器。</p>
           </div>
@@ -372,10 +570,13 @@
           <div>
             <span class="priority p2">程式碼搜尋</span>
             <div class="card-header">
-              <div><div class="site-name">CatalyzeX</div><div class="tagline">幫論文找開源實作</div></div>
+              <div>
+                <div class="site-name">CatalyzeX</div>
+                <div class="tagline">幫論文找開源實作</div>
+              </div>
               <a href="https://www.catalyzex.com/" target="_blank" rel="noopener noreferrer" class="btn-link">造訪網站 →</a>
             </div>
-            <p class="description">可搜尋 AI 與其他研究論文的開源程式碼，也有瀏覽器擴充功能，瀏覽 arXiv、Scholar、GitHub 時能提示相關 code。</p>
+            <p class="description">可搜尋 AI 與其他研究論文的開源程式碼，也有瀏覽器擴充功能。瀏覽 arXiv、Scholar、GitHub 時能提示相關 code。</p>
           </div>
           <div class="best-for"><strong>最適合：</strong>快速判斷一篇論文能不能實作。</div>
         </article>
@@ -383,7 +584,10 @@
           <div>
             <span class="priority p2">模型/資料</span>
             <div class="card-header">
-              <div><div class="site-name">Hugging Face Models</div><div class="tagline">模型權重、Demo、使用方式</div></div>
+              <div>
+                <div class="site-name">Hugging Face Models</div>
+                <div class="tagline">模型權重、Demo、使用方式</div>
+              </div>
               <a href="https://huggingface.co/models" target="_blank" rel="noopener noreferrer" class="btn-link">造訪網站 →</a>
             </div>
             <p class="description">讀模型論文時，用來確認是否有實際模型權重、推論範例、license 與社群使用情況。</p>
@@ -394,25 +598,58 @@
           <div>
             <span class="priority p2">資料集</span>
             <div class="card-header">
-              <div><div class="site-name">Hugging Face Datasets</div><div class="tagline">資料集、dataset card、使用限制</div></div>
+              <div>
+                <div class="site-name">Hugging Face Datasets</div>
+                <div class="tagline">資料集、dataset card、使用限制</div>
+              </div>
               <a href="https://huggingface.co/datasets" target="_blank" rel="noopener noreferrer" class="btn-link">造訪網站 →</a>
             </div>
             <p class="description">用來檢查資料來源、欄位、license、偏差、限制與可否直接載入。資料集論文尤其需要看這裡。</p>
           </div>
           <div class="best-for"><strong>最適合：</strong>資料品質與可遷移性分析。</div>
         </article>
+        <article class="card">
+          <div>
+            <span class="priority p3">程式碼趨勢</span>
+            <div class="card-header">
+              <div>
+                <div class="site-name">GitHub Trending Python</div>
+                <div class="tagline">每日熱門專案</div>
+              </div>
+              <a href="https://github.com/trending/python?since=daily" target="_blank" rel="noopener noreferrer" class="btn-link">造訪網站 →</a>
+            </div>
+            <p class="description">不是論文入口，但可補看近期 AI 工具與開源實作是否真的有人使用。</p>
+          </div>
+          <div class="best-for"><strong>最適合：</strong>驗證論文或工具是否有工程社群動能。</div>
+        </article>
+        <article class="card">
+          <div>
+            <span class="priority p3">開源模型</span>
+            <div class="card-header">
+              <div>
+                <div class="site-name">ModelScope</div>
+                <div class="tagline">模型、資料集與應用生態</div>
+              </div>
+              <a href="https://modelscope.cn/" target="_blank" rel="noopener noreferrer" class="btn-link">造訪網站 →</a>
+            </div>
+            <p class="description">中文／中國模型與資料集平台之一。若研究來自中國團隊，可能比 Hugging Face 更容易找到同步釋出的模型或 demo。</p>
+          </div>
+          <div class="best-for"><strong>最適合：</strong>補查中國模型權重、demo 與資料集。</div>
+        </article>
       </div>
     </section>
-
     <section class="section" id="maps">
-      <h2 class="section-title">4. 引文地圖、個人化追蹤與研究網絡</h2>
+      <h2 class="section-title">5. 引文地圖、個人化追蹤與研究網絡</h2>
       <p class="section-intro">用來回答「這篇論文在研究脈絡中在哪裡？」以及「後續還有哪些相關新論文？」</p>
       <div class="grid">
         <article class="card">
           <div>
             <span class="priority p1">研究追蹤</span>
             <div class="card-header">
-              <div><div class="site-name">Semantic Scholar</div><div class="tagline">AI-powered scholarly search / feeds / alerts</div></div>
+              <div>
+                <div class="site-name">Semantic Scholar</div>
+                <div class="tagline">AI-powered scholarly search / feeds / alerts</div>
+              </div>
               <a href="https://www.semanticscholar.org/" target="_blank" rel="noopener noreferrer" class="btn-link">造訪網站 →</a>
             </div>
             <p class="description">適合查引用、作者、相關論文與建立 Research Feeds。可用來追蹤某個主題的新論文推薦。</p>
@@ -423,7 +660,10 @@
           <div>
             <span class="priority p1">文獻地圖</span>
             <div class="card-header">
-              <div><div class="site-name">Litmaps</div><div class="tagline">citation map + monitoring</div></div>
+              <div>
+                <div class="site-name">Litmaps</div>
+                <div class="tagline">citation map + monitoring</div>
+              </div>
               <a href="https://www.litmaps.com/" target="_blank" rel="noopener noreferrer" class="btn-link">造訪網站 →</a>
             </div>
             <p class="description">丟入種子論文後建立引文網絡，適合找前置論文、後續論文與主題演化方向。</p>
@@ -434,7 +674,10 @@
           <div>
             <span class="priority p2">引用擴展</span>
             <div class="card-header">
-              <div><div class="site-name">ResearchRabbit</div><div class="tagline">related papers / citation maps / trend tracking</div></div>
+              <div>
+                <div class="site-name">ResearchRabbit</div>
+                <div class="tagline">related papers / citation maps / trend tracking</div>
+              </div>
               <a href="https://www.researchrabbit.ai/" target="_blank" rel="noopener noreferrer" class="btn-link">造訪網站 →</a>
             </div>
             <p class="description">從幾篇種子論文出發，擴展相關論文與引文網絡。適合在進入陌生主題時先建立地圖。</p>
@@ -445,7 +688,10 @@
           <div>
             <span class="priority p3">視覺化</span>
             <div class="card-header">
-              <div><div class="site-name">Connected Papers</div><div class="tagline">visual graph of related papers</div></div>
+              <div>
+                <div class="site-name">Connected Papers</div>
+                <div class="tagline">visual graph of related papers</div>
+              </div>
               <a href="https://www.connectedpapers.com/" target="_blank" rel="noopener noreferrer" class="btn-link">造訪網站 →</a>
             </div>
             <p class="description">視覺化相近論文關係。適合快速理解一篇核心論文周圍的研究群落。</p>
@@ -456,7 +702,10 @@
           <div>
             <span class="priority p3">大型索引</span>
             <div class="card-header">
-              <div><div class="site-name">OpenAlex</div><div class="tagline">open scholarly graph / API</div></div>
+              <div>
+                <div class="site-name">OpenAlex</div>
+                <div class="tagline">open scholarly graph / API</div>
+              </div>
               <a href="https://openalex.org/" target="_blank" rel="noopener noreferrer" class="btn-link">造訪網站 →</a>
             </div>
             <p class="description">開放學術知識圖譜，可查 works、authors、venues、concepts。較適合做資料分析或自動化文獻管線。</p>
@@ -467,7 +716,10 @@
           <div>
             <span class="priority p3">搜尋提醒</span>
             <div class="card-header">
-              <div><div class="site-name">Google Scholar Alerts</div><div class="tagline">keyword / author / citation alerts</div></div>
+              <div>
+                <div class="site-name">Google Scholar Alerts</div>
+                <div class="tagline">keyword / author / citation alerts</div>
+              </div>
               <a href="https://scholar.google.com/scholar_alerts" target="_blank" rel="noopener noreferrer" class="btn-link">造訪網站 →</a>
             </div>
             <p class="description">適合追蹤特定關鍵字、作者或主題的新文章。缺點是噪音較高，需要用精準關鍵字。</p>
@@ -476,10 +728,191 @@
         </article>
       </div>
     </section>
-
     <section class="section" id="labs">
-      <h2 class="section-title">5. 頂級 AI 研究機構與官方研究入口</h2>
+      <h2 class="section-title">6. 頂級 AI 研究機構與官方研究入口</h2>
       <p class="section-intro">適合追蹤模型報告、system card、安全評測、產品背後的研究主線。</p>
       <div class="grid">
-        <article class="card"><div><div class="card-header"><div><div class="site-name">OpenAI Research</div><div class="tagline">models / safety / system cards</div></div><a href="https://openai.com/research" target="_blank" rel="noopener noreferrer" class="btn-link">造訪網站 →</a></div><p class="description">追蹤 OpenAI 的研究報告、模型能力、安全與系統文件。</p></div><div class="best-for"><strong>最適合：</strong>模型能力與產品研究脈絡。</div></article>
-        <article class="card"><div><div class="card-header"><div><div class="site-name">Google DeepMind Research</div><div class="tagline">Gemini / science AI / infrastructure</div></div><a href="https://deepmind.google/research/
+        <article class="card">
+          <div>
+            <span class="priority p1">官方研究</span>
+            <div class="card-header">
+              <div>
+                <div class="site-name">OpenAI Research</div>
+                <div class="tagline">models / safety / system cards</div>
+              </div>
+              <a href="https://openai.com/research" target="_blank" rel="noopener noreferrer" class="btn-link">造訪網站 →</a>
+            </div>
+            <p class="description">追蹤 OpenAI 的研究報告、模型能力、安全與系統文件。</p>
+          </div>
+          <div class="best-for"><strong>最適合：</strong>模型能力與產品研究脈絡。</div>
+        </article>
+        <article class="card">
+          <div>
+            <span class="priority p1">官方研究</span>
+            <div class="card-header">
+              <div>
+                <div class="site-name">Google DeepMind Research</div>
+                <div class="tagline">Gemini / science AI / infrastructure</div>
+              </div>
+              <a href="https://deepmind.google/research/" target="_blank" rel="noopener noreferrer" class="btn-link">造訪網站 →</a>
+            </div>
+            <p class="description">追蹤 DeepMind 在模型、科學 AI、強化學習與安全研究上的主線。</p>
+          </div>
+          <div class="best-for"><strong>最適合：</strong>理解大型模型與科學 AI 的研究方向。</div>
+        </article>
+        <article class="card">
+          <div>
+            <span class="priority p2">官方研究</span>
+            <div class="card-header">
+              <div>
+                <div class="site-name">Google Research</div>
+                <div class="tagline">AI、系統、搜尋、資料與產品研究</div>
+              </div>
+              <a href="https://research.google/" target="_blank" rel="noopener noreferrer" class="btn-link">造訪網站 →</a>
+            </div>
+            <p class="description">Google 更廣泛的研究入口，涵蓋 AI、系統、資料、HCI、搜尋與產品化研究。</p>
+          </div>
+          <div class="best-for"><strong>最適合：</strong>補看產品型 AI 與大規模系統研究。</div>
+        </article>
+        <article class="card">
+          <div>
+            <span class="priority p2">官方研究</span>
+            <div class="card-header">
+              <div>
+                <div class="site-name">Microsoft Research AI</div>
+                <div class="tagline">AI research at Microsoft</div>
+              </div>
+              <a href="https://www.microsoft.com/en-us/research/research-area/artificial-intelligence/" target="_blank" rel="noopener noreferrer" class="btn-link">造訪網站 →</a>
+            </div>
+            <p class="description">追蹤 Microsoft 在 AI、系統、工具、程式語言與科學計算方向的研究。</p>
+          </div>
+          <div class="best-for"><strong>最適合：</strong>看 AI + 軟體工程 / 生產力工具。</div>
+        </article>
+        <article class="card">
+          <div>
+            <span class="priority p2">官方研究</span>
+            <div class="card-header">
+              <div>
+                <div class="site-name">Meta AI Research</div>
+                <div class="tagline">open models / vision / language / systems</div>
+              </div>
+              <a href="https://ai.meta.com/research/" target="_blank" rel="noopener noreferrer" class="btn-link">造訪網站 →</a>
+            </div>
+            <p class="description">追蹤 Meta 在開源模型、CV、語言、多模態與系統研究上的動向。</p>
+          </div>
+          <div class="best-for"><strong>最適合：</strong>看開源模型與大規模基礎研究。</div>
+        </article>
+        <article class="card">
+          <div>
+            <span class="priority p2">官方研究</span>
+            <div class="card-header">
+              <div>
+                <div class="site-name">Anthropic Research</div>
+                <div class="tagline">alignment / interpretability / safety</div>
+              </div>
+              <a href="https://www.anthropic.com/research" target="_blank" rel="noopener noreferrer" class="btn-link">造訪網站 →</a>
+            </div>
+            <p class="description">偏 alignment、constitutional AI、interpretability、安全與模型行為研究。</p>
+          </div>
+          <div class="best-for"><strong>最適合：</strong>追蹤安全與對齊研究。</div>
+        </article>
+        <article class="card">
+          <div>
+            <span class="priority p3">官方研究</span>
+            <div class="card-header">
+              <div>
+                <div class="site-name">Apple Machine Learning Research</div>
+                <div class="tagline">on-device AI / ML systems</div>
+              </div>
+              <a href="https://machinelearning.apple.com/" target="_blank" rel="noopener noreferrer" class="btn-link">造訪網站 →</a>
+            </div>
+            <p class="description">偏端側 AI、模型效率、隱私、語音、視覺與產品系統研究。</p>
+          </div>
+          <div class="best-for"><strong>最適合：</strong>看端側部署與產品化 ML。</div>
+        </article>
+        <article class="card">
+          <div>
+            <span class="priority p2">官方研究</span>
+            <div class="card-header">
+              <div>
+                <div class="site-name">NVIDIA Research</div>
+                <div class="tagline">AI infrastructure / graphics / robotics</div>
+              </div>
+              <a href="https://research.nvidia.com/" target="_blank" rel="noopener noreferrer" class="btn-link">造訪網站 →</a>
+            </div>
+            <p class="description">偏 GPU、圖形、機器人、AI 基礎設施、模擬與科學計算。</p>
+          </div>
+          <div class="best-for"><strong>最適合：</strong>看 AI 硬體、模擬與機器人方向。</div>
+        </article>
+        <article class="card">
+          <div>
+            <span class="priority p2">研究機構</span>
+            <div class="card-header">
+              <div>
+                <div class="site-name">Allen Institute for AI</div>
+                <div class="tagline">AI2 / open models / datasets</div>
+              </div>
+              <a href="https://allenai.org/research" target="_blank" rel="noopener noreferrer" class="btn-link">造訪網站 →</a>
+            </div>
+            <p class="description">AI2 常有開放模型、資料集、benchmark 與 NLP / science AI 研究。</p>
+          </div>
+          <div class="best-for"><strong>最適合：</strong>追蹤高品質開源與資料集研究。</div>
+        </article>
+        <article class="card">
+          <div>
+            <span class="priority p3">學術實驗室</span>
+            <div class="card-header">
+              <div>
+                <div class="site-name">Berkeley BAIR</div>
+                <div class="tagline">Berkeley AI Research</div>
+              </div>
+              <a href="https://bair.berkeley.edu/blog/" target="_blank" rel="noopener noreferrer" class="btn-link">造訪網站 →</a>
+            </div>
+            <p class="description">學術研究 blog，常有 RL、robotics、LLM、AI safety 與系統方向的研究解讀。</p>
+          </div>
+          <div class="best-for"><strong>最適合：</strong>補充學術脈絡與研究者觀點。</div>
+        </article>
+      </div>
+    </section>
+    <section class="section" id="workflow">
+      <h2 class="section-title">7. 建議閱讀工作流</h2>
+      <p class="section-intro">避免資訊過載。這個頁面不是要你每個網站都看，而是把不同任務交給不同來源。</p>
+      <div class="workflow">
+        <h3>每日 10 分鐘</h3>
+        <ol>
+          <li>先看 Hugging Face Daily / Trending，抓 3–5 篇候選論文。</li>
+          <li>若想補中國研究動向，再看 ChinaRxiv AI / CS 或 ChinaXiv 計算機科學。</li>
+          <li>只記錄題名、URL、是否有 code / model / dataset，不要立即深讀。</li>
+        </ol>
+      </div>
+      <div class="workflow two">
+        <h3>每週 40 分鐘</h3>
+        <ol>
+          <li>把候選論文丟到 Semantic Scholar / Litmaps，看前置論文、後續引用與相近工作。</li>
+          <li>用 Papers with Code、Hugging Face、GitHub、OpenI 檢查可復現性。</li>
+          <li>只把價值初篩 18 分以上的論文交給本專案做完整雙欄批注 HTML。</li>
+        </ol>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>問題</th><th>優先使用來源</th><th>判斷重點</th></tr></thead>
+          <tbody>
+            <tr><td>今天 AI 社群在看什麼？</td><td>Hugging Face Papers、alphaXiv</td><td>熱度、討論、是否有程式碼或 demo</td></tr>
+            <tr><td>這篇論文是否真的進入學術脈絡？</td><td>Semantic Scholar、Litmaps、OpenReview</td><td>引用、相關工作、審稿質疑</td></tr>
+            <tr><td>有沒有中國研究團隊或中文預印本？</td><td>ChinaRxiv、ChinaXiv、AMiner、PubScholar</td><td>是否為預印本、是否有英文版、是否有正式發表版本</td></tr>
+            <tr><td>能不能實作？</td><td>Papers with Code、CatalyzeX、Hugging Face、GitHub、OpenI</td><td>code、dataset、model、license、維護狀態</td></tr>
+            <tr><td>大廠最近真正押什麼方向？</td><td>OpenAI、DeepMind、Meta、Anthropic、Microsoft、NVIDIA</td><td>模型報告、system card、安全文件、基礎設施研究</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h3 class="subhead">可直接貼給本專案的論文整理 prompt</h3>
+      <div class="prompt-box">請針對以下論文先做「論文價值初篩」，再產出 GitHub Pages 可直接上傳的單篇 HTML 雙欄批注文件。請包含：問題重要性、方法新穎性、可遷移性、證據強度、可操作性五項 0–5 分；英文原文核心段落、繁體中文意譯、逐段中文批注、新知萃取、論證結構總覽。論文 URL：&lt;貼上 URL&gt;</div>
+    </section>
+  </main>
+
+  <footer>
+    <p>AI 論文追蹤與新知萃取導航｜本頁已加入 noindex，適合放在私人或半公開 GitHub Pages。</p>
+    <p><a href="#top">回首頁 ↑</a></p>
+  </footer>
+</body>
+</html>
